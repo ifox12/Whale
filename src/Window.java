@@ -1,24 +1,33 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Window {
-    private JFrame frame;
+public class Window extends JFrame {
+    private Image screen;
 
     Window(Image screen) {
-        frame = new JFrame("Whale");
-        getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getFrame().setLayout(new BorderLayout());
-        getFrame().setSize(100, 100);
-        getFrame().setLocationRelativeTo(null);
+        super("Whale");
+        this.setScreen(screen);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setSize(200, 200);
+        setLocationRelativeTo(null);
+//
+//        JLabel content = new JLabel(new ImageIcon(screen));
 
-        JLabel content = new JLabel(new ImageIcon(screen));
-
-        getFrame().add(content, BorderLayout.CENTER);
-        getFrame().pack();
-        getFrame().setVisible(true);
+//        add(content, BorderLayout.CENTER);
+//        pack();
+        setVisible(true);
     }
 
-    public JFrame getFrame() {
-        return frame;
+    public void paint(Graphics gfx) {
+        gfx.drawImage(getScreen(), 0, 0, null);
+    }
+
+    public Image getScreen() {
+        return screen;
+    }
+
+    public void setScreen(Image screen) {
+        this.screen = screen;
     }
 }

@@ -27,11 +27,11 @@ class Player {
     }
 
     boolean moveUpFor(int steps) {
-        return moveTo(position.x, position.y + steps);
+        return moveTo(position.x, position.y - steps);
     }
 
     boolean moveDownFor(int steps) {
-        return moveTo(position.x, position.y - steps);
+        return moveTo(position.x, position.y + steps);
     }
 
     Coordinate getPosition() {
