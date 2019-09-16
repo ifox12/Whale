@@ -8,6 +8,7 @@ import java.io.IOException;
 public class GameManager implements ActionListener {
     private Map map;
     private Player player;
+    private Item item;
     private Window window;
     private Blitter blitter;
     private Input input;
@@ -16,8 +17,9 @@ public class GameManager implements ActionListener {
     GameManager() throws IOException, FontFormatException {
         setMap(new Map());
         setPlayer(new Player(new Coordinate(3, 3), map));
+        setItem(new Item(2, 1));
         setBlitter(new Blitter());
-        Image screen = blitter.calculateScreen(map, player);
+        Image screen = blitter.calculateScreen(map, player, item);
         window = new Window(screen);
         input = new Input();
         input.setUpInput(player, window);
@@ -28,7 +30,7 @@ public class GameManager implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == timer) {
             try {
-                window.setScreen(blitter.calculateScreen(map, player));
+                window.setScreen(blitter.calculateScreen(map, player, item));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (FontFormatException e) {
@@ -65,5 +67,9 @@ public class GameManager implements ActionListener {
 
     public void setBlitter(Blitter blitter) {
         this.blitter = blitter;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

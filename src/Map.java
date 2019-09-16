@@ -6,16 +6,6 @@ public class Map implements IMap {
         setMap_Default();
     }
 
-    Map(Map another) {
-        map = new char[another.map.length][another.map[0].length];
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[0].length; j++) {
-                map[i][j] = another.map[i][j];
-            }
-        }
-
-    }
-
     void setMap(char[][] mapData) {
         this.map = mapData;
     }
@@ -32,13 +22,21 @@ public class Map implements IMap {
     }
 
     @Override
-    public boolean isCellEmpty(int x, int y) {
-        return map[y][x] == '.';
+    public boolean isCellEmpty(int row, int column) {
+        return map[row][column] == '.';
 
     }
 
     @Override
     public char[][] drawableRepresentation() {
-        return new Map(this).map;
+        return copy2DCharArray(map);
+    }
+
+    private char[][] copy2DCharArray(char[][] input) {
+        char[][] result = input.clone();
+        for (int row = 0; row < input.length; row++) {
+            result[row] = input[row].clone();
+        }
+        return result;
     }
 }

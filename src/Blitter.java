@@ -7,16 +7,18 @@ public class Blitter {
     private Graphics2D gfx;
     private FontData fontData;
     private char[][] drawableMap;
+    private Item item;
 
-    Image calculateScreen(Map map, Player player) throws IOException, FontFormatException {
+    Image calculateScreen(Map map, Player player, Item item) throws IOException, FontFormatException {
         setFontData(new FontData("DejaVuSansMono.ttf"));
-        populateMap(map, player);
+        populateMap(map, player, item);
         return drawMap();
     }
 
-    void populateMap(Map map, Player player) {
+    void populateMap(Map map, Player player, Item item) {
         setDrawableMap(map.drawableRepresentation());
-        getDrawableMap()[player.getPosition().y][player.getPosition().x] = '@';
+        drawableMap[item.getRow()][item.getColumn()] = item.getSymbol();
+        getDrawableMap()[player.getRow()][player.getColumn()] = player.getSymbol();
     }
 
     Image drawMap() {

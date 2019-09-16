@@ -5,14 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     @Test
-    void move_OneToTheRight_OneAddedToLocationX() {
+    void moveTo_OneToTheRight_OneAddedToLocationX() {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveTo(1,0);
+        boolean result = testPlayer.moveTo(1, 0);
 
-        assertEquals(1, testPlayer.position.x);
-        assertEquals(0, testPlayer.position.y);
+        assertTrue(result);
+        assertEquals(new Coordinate(1, 0), testPlayer.getPosition());
     }
 
     @Test
@@ -20,10 +20,10 @@ class PlayerTest {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveTo(1, 1);
+        boolean result = testPlayer.moveTo(1, 1);
 
-        assertEquals(1, testPlayer.position.x);
-        assertEquals(1, testPlayer.position.y);
+        assertTrue(result);
+        assertEquals(new Coordinate(1, 1), testPlayer.getPosition());
     }
 
     @Test
@@ -33,8 +33,8 @@ class PlayerTest {
 
         testPlayer.moveLeftFor(1);
 
-        assertEquals(-1, testPlayer.position.x);
-        assertEquals(0, testPlayer.position.y);
+        assertEquals(0, testPlayer.position.row);
+        assertEquals(-1, testPlayer.position.column);
     }
 
     @Test
@@ -44,8 +44,8 @@ class PlayerTest {
 
         testPlayer.moveLeftFor(0);
 
-        assertEquals(0, testPlayer.position.x);
-        assertEquals(0, testPlayer.position.y);
+        assertEquals(0, testPlayer.position.row);
+        assertEquals(0, testPlayer.position.column);
     }
 
     @Test
@@ -55,8 +55,8 @@ class PlayerTest {
 
         testPlayer.moveRightFor(1);
 
-        assertEquals(1, testPlayer.position.x);
-        assertEquals(0, testPlayer.position.y);
+        assertEquals(0, testPlayer.position.row);
+        assertEquals(1, testPlayer.position.column);
     }
 
     @Test
@@ -67,8 +67,8 @@ class PlayerTest {
         boolean result = testPlayer.moveUpFor(1);
 
         assertFalse(result);
-        assertEquals(0, testPlayer.position.x);
-        assertEquals(0, testPlayer.position.y);
+        assertEquals(0, testPlayer.position.row);
+        assertEquals(0, testPlayer.position.column);
 
     }
 
@@ -79,8 +79,8 @@ class PlayerTest {
 
         testPlayer.moveDownFor(1);
 
-        assertEquals(0, testPlayer.position.x);
-        assertEquals(-1, testPlayer.position.y);
+        assertEquals(1, testPlayer.position.row);
+        assertEquals(0, testPlayer.position.column);
     }
 
     @Test
@@ -90,8 +90,8 @@ class PlayerTest {
 
         testPlayer.moveDownFor(3);
 
-        assertEquals(0, testPlayer.position.x);
-        assertEquals(-3, testPlayer.position.y);
+        assertEquals(3, testPlayer.position.row);
+        assertEquals(0, testPlayer.position.column);
     }
 
     @Test
@@ -102,8 +102,8 @@ class PlayerTest {
         boolean result = testPlayer.moveTo(1, 1);
 
         assertFalse(result);
-        assertEquals(0, testPlayer.position.x);
-        assertEquals(0, testPlayer.position.y);
+        assertEquals(0, testPlayer.position.row);
+        assertEquals(0, testPlayer.position.column);
 
     }
 

@@ -3,28 +3,39 @@ import java.awt.*;
 
 public class Window extends JFrame {
     private Image screen;
+    private DrawingPanel panel;
 
     Window(Image screen) {
         super("Whale");
+        panel = new DrawingPanel(null);
         this.setScreen(screen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(200, 200);
         setLocationRelativeTo(null);
-//
-//        JLabel content = new JLabel(new ImageIcon(screen));
+        panel.setScreen(screen);
+        add(panel);
 
-//        add(content, BorderLayout.CENTER);
-//        pack();
         setVisible(true);
     }
 
-    public void paint(Graphics gfx) {
-        gfx.drawImage(getScreen(), 0, 0, null);
+    public void setScreen(Image screen) {
+        this.screen = screen;
+        panel.setScreen(screen);
+    }
+}
+
+class DrawingPanel extends JPanel {
+
+    private Image screen;
+
+    DrawingPanel(Image screen) {
+        this.setScreen(screen);
     }
 
-    public Image getScreen() {
-        return screen;
+    public void paint(Graphics gfx) {
+        super.paint(gfx);
+        gfx.drawImage(screen, 0, 0, null);
     }
 
     public void setScreen(Image screen) {
