@@ -1,17 +1,13 @@
 public class Map implements IMap {
 
-    char[][] map;
+    private char[][] map;
 
     Map() {
         setMap_Default();
     }
 
-    void setMap(char[][] mapData) {
-        this.map = mapData;
-    }
-
-    void setMap_Default() {
-        map = new char[][] {
+    private void setMap_Default() {
+        map = new char[][]{
                 {'#', '#', '#', '#', '#', '#'},
                 {'#', '.', '.', '.', '.', '#'},
                 {'#', '.', '.', '.', '.', '#'},
@@ -19,6 +15,10 @@ public class Map implements IMap {
                 {'#', '.', '.', '.', '.', '#'},
                 {'#', '#', '#', '#', '#', '#'},
         };
+    }
+
+    void setMap(char[][] mapData) {
+        this.map = mapData;
     }
 
     @Override

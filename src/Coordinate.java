@@ -1,10 +1,18 @@
 public class Coordinate {
-    int row;
-    int column;
+    private int row;
+    private int column;
 
     Coordinate(int row, int column) {
         this.row = row;
         this.column = column;
+    }
+
+    int row() {
+        return row;
+    }
+
+    int column() {
+        return column;
     }
 
     @Override

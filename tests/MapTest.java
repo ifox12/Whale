@@ -1,19 +1,10 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MapTest {
-
-    private char[][] dotMapData() {
-        // TODO there's some array filling function in java.util or sth
-        char[][] result = new char[10][10];
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                result[i][j] = '.';
-            }
-        }
-        return result;
-    }
+class MapTest {
 
     @Test
     void drawableRepresentation_MapFilledWithDots_Returns2DCharArrayWithDots() {
@@ -24,6 +15,25 @@ public class MapTest {
 
         assertEquals('.', result[0][0]);
         assertEquals('.', result[5][5]);
+    }
+
+    private char[][] dotMapData() {
+        char[][] result = new char[10][10];
+        for (char[] row : result) {
+            Arrays.fill(row, '.');
+        }
+        return result;
+    }
+
+    @Test
+    void drawableRepresentation_DefaultMap_Returns2DCharArrayWithDefaultMap() {
+        Map testMap = new Map();
+
+        char[][] result = testMap.drawableRepresentation();
+
+        assertEquals('#', result[0][0]);
+        assertEquals('#', result[5][5]);
+        assertEquals('.', result[2][3]);
     }
 
     @Test

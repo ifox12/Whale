@@ -1,25 +1,15 @@
-public class Item implements Placeable {
+public class Item implements IItem {
 
     final char symbol = '$';
     Coordinate position;
 
-    Item(int row, int column) {
-        position = new Coordinate(row, column);
+    Item(Coordinate position) {
+        this.position = position;
     }
 
     @Override
     public Coordinate getPosition() {
         return position;
-    }
-
-    @Override
-    public int getRow() {
-        return position.row;
-    }
-
-    @Override
-    public int getColumn() {
-        return position.column;
     }
 
     @Override

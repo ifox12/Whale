@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Window extends JFrame {
+class Window extends JFrame {
     private Image screen;
     private DrawingPanel panel;
 
-    Window(Image screen) {
+    Window() {
         super("Whale");
         panel = new DrawingPanel(null);
         this.setScreen(screen);
@@ -13,13 +13,12 @@ public class Window extends JFrame {
         setLayout(new BorderLayout());
         setSize(200, 200);
         setLocationRelativeTo(null);
-        panel.setScreen(screen);
         add(panel);
 
         setVisible(true);
     }
 
-    public void setScreen(Image screen) {
+    void setScreen(Image screen) {
         this.screen = screen;
         panel.setScreen(screen);
     }
@@ -38,7 +37,7 @@ class DrawingPanel extends JPanel {
         gfx.drawImage(screen, 0, 0, null);
     }
 
-    public void setScreen(Image screen) {
+    void setScreen(Image screen) {
         this.screen = screen;
     }
 }

@@ -27,14 +27,25 @@ class PlayerTest {
     }
 
     @Test
+    void moveTo_InaccessibleTile_ReturnsFalseAndLocationUnchanged() {
+        IMap stubMap = new FakeMap(false);
+        Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
+
+        boolean result = testPlayer.moveTo(1, 1);
+
+        assertFalse(result);
+        assertEquals(new Coordinate(0, 0), testPlayer.getPosition());
+    }
+
+    @Test
     void moveLeft_OneStep_LocationXReducedByOne() {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveLeftFor(1);
+        boolean result = testPlayer.moveLeftFor(1);
 
-        assertEquals(0, testPlayer.position.row);
-        assertEquals(-1, testPlayer.position.column);
+        assertTrue(result);
+        assertEquals(new Coordinate(0, -1), testPlayer.getPosition());
     }
 
     @Test
@@ -42,10 +53,10 @@ class PlayerTest {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveLeftFor(0);
+        boolean result = testPlayer.moveLeftFor(0);
 
-        assertEquals(0, testPlayer.position.row);
-        assertEquals(0, testPlayer.position.column);
+        assertTrue(result);
+        assertEquals(new Coordinate(0, 0), testPlayer.getPosition());
     }
 
     @Test
@@ -53,10 +64,10 @@ class PlayerTest {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveRightFor(1);
+        boolean result = testPlayer.moveRightFor(1);
 
-        assertEquals(0, testPlayer.position.row);
-        assertEquals(1, testPlayer.position.column);
+        assertTrue(result);
+        assertEquals(new Coordinate(0, 1), testPlayer.getPosition());
     }
 
     @Test
@@ -67,9 +78,7 @@ class PlayerTest {
         boolean result = testPlayer.moveUpFor(1);
 
         assertFalse(result);
-        assertEquals(0, testPlayer.position.row);
-        assertEquals(0, testPlayer.position.column);
-
+        assertEquals(new Coordinate(0, 0), testPlayer.getPosition());
     }
 
     @Test
@@ -77,10 +86,10 @@ class PlayerTest {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveDownFor(1);
+        boolean result = testPlayer.moveDownFor(1);
 
-        assertEquals(1, testPlayer.position.row);
-        assertEquals(0, testPlayer.position.column);
+        assertTrue(result);
+        assertEquals(new Coordinate(1, 0), testPlayer.getPosition());
     }
 
     @Test
@@ -88,26 +97,37 @@ class PlayerTest {
         IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
 
-        testPlayer.moveDownFor(3);
+        boolean result = testPlayer.moveDownFor(3);
 
-        assertEquals(3, testPlayer.position.row);
-        assertEquals(0, testPlayer.position.column);
+        assertTrue(result);
+        assertEquals(new Coordinate(3, 0), testPlayer.getPosition());
     }
 
     @Test
-    void moveTo_InaccessibleTile_ReturnsFalseAndLocationUnchanged() {
-        IMap stubMap = new FakeMap(false);
-        Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
+    void addToInventory_ItemInSamePlaceAsPlayer_InventoryContainsItem() {
+        IMap stubMap = new FakeMap(true);
+        Player testPlayer = new Player(new Coordinate(0,0), stubMap);
+        IItem stubItem = new FakeItem(new Coordinate(0, 0));
 
-        boolean result = testPlayer.moveTo(1, 1);
+        testPlayer.addToInventory(stubItem);
 
-        assertFalse(result);
-        assertEquals(0, testPlayer.position.row);
-        assertEquals(0, testPlayer.position.column);
-
+        assertTrue(testPlayer.inventoryContains(stubItem));
     }
 
-    class FakeMap implements IMap {
+    @Test
+    void addToInventory_ItemNotInSamePlaceAsPlayer_ItemNotPickedUp() {
+        IMap stubMap = new FakeMap(true);
+        Player testPlayer = new Player(new Coordinate(0, 0), stubMap);
+        IItem stubItem = new FakeItem(new Coordinate(1,1));
+
+        testPlayer.addToInventory(stubItem);
+
+        assertFalse(testPlayer.inventoryContains(stubItem));
+    }
+
+
+
+    private class FakeMap implements IMap {
 
         boolean empty;
 
@@ -125,4 +145,21 @@ class PlayerTest {
         }
     }
 
+    private class FakeItem implements IItem {
+        Coordinate position;
+
+        FakeItem(Coordinate position) {
+            this.position = position;
+        }
+
+        @Override
+        public Coordinate getPosition() {
+            return position;
+        }
+
+        @Override
+        public char getSymbol() {
+            return '$';
+        }
+    }
 }

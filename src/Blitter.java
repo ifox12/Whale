@@ -1,24 +1,34 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Blitter {
     private BufferedImage img;
     private Graphics2D gfx;
     private FontData fontData;
     private char[][] drawableMap;
-    private Item item;
 
-    Image calculateScreen(Map map, Player player, Item item) throws IOException, FontFormatException {
+
+    Image calculateScreen(Map map, Player player, LinkedList<Item> itemList) throws IOException, FontFormatException {
         setFontData(new FontData("DejaVuSansMono.ttf"));
-        populateMap(map, player, item);
+        populateMap(map, player, itemList);
         return drawMap();
     }
 
-    void populateMap(Map map, Player player, Item item) {
+    // TODO Put that into map or some superior structure to hold the different map levels
+    void populateMap(Map map, Player player, LinkedList<Item> itemList) {
         setDrawableMap(map.drawableRepresentation());
-        drawableMap[item.getRow()][item.getColumn()] = item.getSymbol();
-        getDrawableMap()[player.getRow()][player.getColumn()] = player.getSymbol();
+        for (Item item : itemList) {
+            addToDrawableMap(item);
+        }
+        addToDrawableMap(player);
+    }
+
+    private void addToDrawableMap(Placeable placeable) {
+        int row = placeable.getPosition().row();
+        int column = placeable.getPosition().column();
+        getDrawableMap()[row][column] = placeable.getSymbol();
     }
 
     Image drawMap() {
