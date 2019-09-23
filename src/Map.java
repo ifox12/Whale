@@ -1,9 +1,27 @@
+import java.util.LinkedList;
+
 public class Map implements IMap {
 
     private char[][] map;
+    private char[][] drawableRepresentation;
 
     Map() {
         setMap_Default();
+    }
+
+    char[][] drawableRepresentation(IPlayer player, LinkedList<IItem> itemList) {
+        drawableRepresentation = copy2DCharArray(map);
+        for (IItem item : itemList) {
+            addToDrawableRepresentation(item);
+        }
+        addToDrawableRepresentation(player);
+        return drawableRepresentation;
+    }
+
+    private void addToDrawableRepresentation(Placeable placeable) {
+        int row = placeable.getPosition().row();
+        int column = placeable.getPosition().column();
+        drawableRepresentation[row][column] = placeable.getSymbol();
     }
 
     private void setMap_Default() {
@@ -23,13 +41,11 @@ public class Map implements IMap {
 
     @Override
     public boolean isCellEmpty(int row, int column) {
-        return map[row][column] == '.';
-
-    }
-
-    @Override
-    public char[][] drawableRepresentation() {
-        return copy2DCharArray(map);
+        if (row < map.length && column < map[row].length) {
+            return map[row][column] == '.';
+        } else {
+            return false;
+        }
     }
 
     private char[][] copy2DCharArray(char[][] input) {

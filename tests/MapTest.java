@@ -1,19 +1,25 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapTest {
 
     @Test
-    void drawableRepresentation_MapFilledWithDots_Returns2DCharArrayWithDots() {
+    void drawableRepresentation_MapFilledWithDots_DotMapWithPlayerAndItem() {
         Map testMap = new Map();
         testMap.setMap(dotMapData());
+        IPlayer fakePlayer = new FakePlayer();
+        LinkedList<IItem> fakeItemList = new LinkedList<>();
+        fakeItemList.add(new FakeItem(new Coordinate(2,2)));
 
-        char[][] result = testMap.drawableRepresentation();
+        char[][] result = testMap.drawableRepresentation(fakePlayer, fakeItemList);
 
         assertEquals('.', result[0][0]);
+        assertEquals('€', result[1][1]);
+        assertEquals('$', result[2][2]);
         assertEquals('.', result[5][5]);
     }
 
@@ -23,17 +29,6 @@ class MapTest {
             Arrays.fill(row, '.');
         }
         return result;
-    }
-
-    @Test
-    void drawableRepresentation_DefaultMap_Returns2DCharArrayWithDefaultMap() {
-        Map testMap = new Map();
-
-        char[][] result = testMap.drawableRepresentation();
-
-        assertEquals('#', result[0][0]);
-        assertEquals('#', result[5][5]);
-        assertEquals('.', result[2][3]);
     }
 
     @Test
@@ -54,11 +49,34 @@ class MapTest {
         assertTrue(result);
     }
 
-    // TODO this is not very clever, this expects a client class to first call isCellEmpty() before changePlayerPosition,
-    //  better give Map the whole responsiblity or something like that
     @Test
-    void changePlayerPosition_Scenario_ExpectedResult() {
+    void isCellEmpty_OutOfBounds_ReturnFalse() {
+        Map testMap = new Map();
 
+        boolean result = testMap.isCellEmpty(9999, 9999);
 
+        assertFalse(result);
+    }
+
+    private class FakePlayer implements IPlayer {
+        @Override
+        public Coordinate getPosition() {
+            return new Coordinate(1,1);
+        }
+
+        @Override
+        public char getSymbol() {
+            return '€';
+        }
+
+        @Override
+        public void moveTo(int row, int column) {
+
+        }
+
+        @Override
+        public void addToInventory(IItem item) {
+
+        }
     }
 }
