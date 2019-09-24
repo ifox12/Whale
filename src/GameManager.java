@@ -14,8 +14,10 @@ public class GameManager implements ActionListener {
     private Blitter blitter;
     private Input input;
     private Timer timer;
+    private int targetRow;
+    private int targetColumn;
 
-    private GameManager() throws IOException, FontFormatException {
+    protected GameManager() throws IOException, FontFormatException {
         map = new Map();
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
@@ -29,7 +31,7 @@ public class GameManager implements ActionListener {
         timer.start();
     }
 
-    private void updateScreen() throws IOException, FontFormatException {
+    private void updateScreen() {
         final char[][] drawableMap = map.drawableRepresentation(player, itemList);
         final Image surfaceToBlit = blitter.calculateScreen(drawableMap);
         window.setScreen(surfaceToBlit);
@@ -40,37 +42,42 @@ public class GameManager implements ActionListener {
     }
 
     void moveLeftFor(int steps) {
-        final Coordinate playerPosition = player.getPosition();
-        if (map.isCellEmpty(playerPosition.row(), playerPosition.column() - steps))
-            player.moveTo(playerPosition.row(), playerPosition.column() - steps);
+        extractPlayerPosition();
+
+        if (map.isCellEmpty(targetRow, targetColumn - steps))
+            player.moveTo(targetRow, targetColumn - steps);
+    }
+
+    private void extractPlayerPosition() {
+        targetRow = player.getPosition().row();
+        targetColumn = player.getPosition().column();
     }
 
     void moveRightFor(int steps) {
-        final Coordinate playerPosition = player.getPosition();
-        if (map.isCellEmpty(playerPosition.row(), playerPosition.column() + steps))
-            player.moveTo(playerPosition.row(), playerPosition.column() + steps);
+        extractPlayerPosition();
+
+        if (map.isCellEmpty(targetRow, targetColumn + steps))
+            player.moveTo(targetRow, targetColumn + steps);
     }
 
     void moveUpFor(int steps) {
-        final Coordinate playerPosition = player.getPosition();
-        if (map.isCellEmpty(playerPosition.row() - steps, playerPosition.column()))
-            player.moveTo(playerPosition.row() - steps, playerPosition.column());
+        extractPlayerPosition();
+
+        if (map.isCellEmpty(targetRow - steps, targetColumn))
+            player.moveTo(targetRow - steps, targetColumn);
     }
 
     void moveDownFor(int steps) {
-        final Coordinate playerPosition = player.getPosition();
-        if (map.isCellEmpty(playerPosition.row() + steps, playerPosition.column()))
-            player.moveTo(playerPosition.row() + steps, playerPosition.column());
+        extractPlayerPosition();
+
+        if (map.isCellEmpty(targetRow + steps, targetColumn))
+            player.moveTo(targetRow + steps, targetColumn);
     }
 
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == timer) {
-            try {
-                updateItemsAndInventory();
-                updateScreen();
-            } catch (IOException | FontFormatException e) {
-                e.printStackTrace();
-            }
+            updateItemsAndInventory();
+            updateScreen();
             window.repaint();
         }
     }

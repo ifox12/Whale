@@ -91,7 +91,6 @@ class PlayerTest {
 
     @Test
     void addToInventory_ItemInSamePlaceAsPlayer_InventoryContainsItem() {
-        IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0));
         IItem stubItem = new FakeItem(new Coordinate(0, 0));
 
@@ -102,7 +101,6 @@ class PlayerTest {
 
     @Test
     void addToInventory_ItemNotInSamePlaceAsPlayer_ItemNotPickedUp() {
-        IMap stubMap = new FakeMap(true);
         Player testPlayer = new Player(new Coordinate(0, 0));
         IItem stubItem = new FakeItem(new Coordinate(1, 1));
 
@@ -111,19 +109,27 @@ class PlayerTest {
         assertFalse(testPlayer.inventoryContains(stubItem));
     }
 
+    @Test
+    void inventoryContains_ItemInInventory_ReturnsTrue() {
+        Player testPlayer = new Player(new Coordinate(0, 0));
+        //TODO addToInventory depends on item and player being in the same location for now
+        IItem stubItem = new FakeItem(new Coordinate(0,0));
 
-    private class FakeMap implements IMap {
+        testPlayer.addToInventory(stubItem);
+        boolean result = testPlayer.inventoryContains(stubItem);
 
-        boolean empty;
+        assertTrue(result);
+    }
 
-        FakeMap(boolean empty) {
-            this.empty = empty;
-        }
+    @Test
+    void inventoryContains_ItemNotInInventory_ReturnsFalse() {
+        Player testPlayer = new Player(new Coordinate(0, 0));
+        //TODO addToInventory depends on item and player being in the same location for now
+        IItem stubItem = new FakeItem(new Coordinate(0,0));
 
-        public boolean isCellEmpty(int x, int y) {
-            return empty;
-        }
+        boolean result = testPlayer.inventoryContains(stubItem);
 
+        assertFalse(result);
     }
 }
     class FakeItem implements IItem {

@@ -12,12 +12,9 @@ public class Blitter {
     }
 
     Image calculateScreen(char[][] drawableMap) {
-        return drawMap(drawableMap);
-    }
-
-    Image drawMap(char[][] drawableMap) {
-        BufferedImage screen = new BufferedImage(getFontData().fontWidth * 6, getFontData().fontHeight * 6, BufferedImage.TYPE_INT_RGB);
+        BufferedImage screen = new BufferedImage(getFontData().fontWidth * 12, getFontData().fontHeight * 7, BufferedImage.TYPE_INT_RGB);
         Graphics2D screenGfx = (Graphics2D) screen.getGraphics();
+
 
 
         for (int i = 0; i < drawableMap.length; i++) {

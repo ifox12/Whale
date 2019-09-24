@@ -10,7 +10,7 @@ public class Map implements IMap {
     }
 
     char[][] drawableRepresentation(IPlayer player, LinkedList<IItem> itemList) {
-        drawableRepresentation = copy2DCharArray(map);
+        drawableRepresentation = convertMapToDrawableRepresentation(map);
         for (IItem item : itemList) {
             addToDrawableRepresentation(item);
         }
@@ -48,7 +48,7 @@ public class Map implements IMap {
         }
     }
 
-    private char[][] copy2DCharArray(char[][] input) {
+    private char[][] convertMapToDrawableRepresentation(char[][] input) {
         char[][] result = input.clone();
         for (int row = 0; row < input.length; row++) {
             result[row] = input[row].clone();
