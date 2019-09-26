@@ -1,14 +1,17 @@
 import java.util.LinkedList;
 
 class Player implements IPlayer {
-    private final char symbol = '@';
+    private char symbol = '@';
 
     private Coordinate position;
     private LinkedList<IItem> inventory;
 
+    private int health;
+
     Player(Coordinate position) {
         this.position = position;
         inventory = new LinkedList<>();
+        health = 10;
     }
 
     public void moveTo(int row, int column) {
@@ -36,7 +39,17 @@ class Player implements IPlayer {
         }
     }
 
-    boolean inventoryContains(Placeable item) {
+    public boolean inventoryContains(Placeable item) {
         return inventory.contains((IItem) item);
+    }
+
+    public void hit(int damage) {
+        health -= damage;
+    }
+
+    public void is_dead() {
+        if (health <= 0) {
+            symbol = '+';
+        }
     }
 }

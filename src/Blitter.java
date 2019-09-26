@@ -6,20 +6,32 @@ public class Blitter {
     private BufferedImage img;
     private Graphics2D gfx;
     private FontData fontData;
+    private final int NUM_OF_ROWS = 6;
+    private final int NUM_OF_COLUMNS = 6;
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    private String message = "";
 
     Blitter() throws IOException, FontFormatException {
         setFontData(new FontData("DejaVuSansMono.ttf"));
     }
 
     Image calculateScreen(char[][] drawableMap) {
-        BufferedImage screen = new BufferedImage(getFontData().fontWidth * 12, getFontData().fontHeight * 7, BufferedImage.TYPE_INT_RGB);
+        final int cellWidth = getFontData().fontWidth;
+        final int cellHeight = getFontData().fontHeight;
+
+        BufferedImage screen = new BufferedImage(cellWidth * NUM_OF_COLUMNS, cellHeight * (NUM_OF_ROWS + 1), BufferedImage.TYPE_INT_RGB);
         Graphics2D screenGfx = (Graphics2D) screen.getGraphics();
 
-
+        screenGfx.setColor(Color.WHITE);
+        screenGfx.drawString(message, 0, getFontData().fontAscent);
 
         for (int i = 0; i < drawableMap.length; i++) {
             for (int j = 0; j < drawableMap[i].length; j++) {
-                screenGfx.drawImage(makeGlyph(drawableMap[i][j]), getFontData().fontWidth * j, getFontData().fontHeight * i, null);
+                screenGfx.drawImage(makeGlyph(drawableMap[i][j]), cellWidth * j, cellHeight + cellHeight * i, null);
             }
         }
 

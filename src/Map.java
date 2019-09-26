@@ -2,26 +2,18 @@ import java.util.LinkedList;
 
 public class Map implements IMap {
 
-    private char[][] map;
-    private char[][] drawableRepresentation;
+     char[][] map;
 
     Map() {
         setMap_Default();
     }
 
-    char[][] drawableRepresentation(IPlayer player, LinkedList<IItem> itemList) {
-        drawableRepresentation = convertMapToDrawableRepresentation(map);
-        for (IItem item : itemList) {
-            addToDrawableRepresentation(item);
+    char[][] getDrawableMap() {
+        char[][] result = map.clone();
+        for (int row1 = 0; row1 < map.length; row1++) {
+            result[row1] = map[row1].clone();
         }
-        addToDrawableRepresentation(player);
-        return drawableRepresentation;
-    }
-
-    private void addToDrawableRepresentation(Placeable placeable) {
-        int row = placeable.getPosition().row();
-        int column = placeable.getPosition().column();
-        drawableRepresentation[row][column] = placeable.getSymbol();
+        return result;
     }
 
     private void setMap_Default() {
@@ -48,11 +40,4 @@ public class Map implements IMap {
         }
     }
 
-    private char[][] convertMapToDrawableRepresentation(char[][] input) {
-        char[][] result = input.clone();
-        for (int row = 0; row < input.length; row++) {
-            result[row] = input[row].clone();
-        }
-        return result;
-    }
 }

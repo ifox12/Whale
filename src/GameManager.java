@@ -10,18 +10,21 @@ public class GameManager implements ActionListener {
     private Map map;
     private IPlayer player;
     private LinkedList<IItem> itemList;
+    private ITrap trap;
     private Window window;
     private Blitter blitter;
     private Input input;
     private Timer timer;
     private int targetRow;
     private int targetColumn;
+    private char[][] drawableRepresentation;
 
-    protected GameManager() throws IOException, FontFormatException {
+    private GameManager() throws IOException, FontFormatException {
         map = new Map();
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
         itemList.add(new Item(new Coordinate(2, 1)));
+        trap = new Trap(new Coordinate(3,2));
         blitter = new Blitter();
         window = new Window();
         updateScreen();
@@ -31,8 +34,26 @@ public class GameManager implements ActionListener {
         timer.start();
     }
 
+    char[][] prepareMapForBlitting() {
+        drawableRepresentation = map.getDrawableMap();
+        for (IItem item : itemList) {
+            addToDrawableMap(item);
+        }
+        if (trap != null) {
+            addToDrawableMap(trap);
+        }
+        addToDrawableMap(player);
+        return drawableRepresentation;
+    }
+
+    private void addToDrawableMap(Placeable placeable) {
+        int row = placeable.getPosition().row();
+        int column = placeable.getPosition().column();
+        drawableRepresentation[row][column] = placeable.getSymbol();
+    }
+
     private void updateScreen() {
-        final char[][] drawableMap = map.drawableRepresentation(player, itemList);
+        final char[][] drawableMap = prepareMapForBlitting();
         final Image surfaceToBlit = blitter.calculateScreen(drawableMap);
         window.setScreen(surfaceToBlit);
     }
@@ -76,6 +97,13 @@ public class GameManager implements ActionListener {
 
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == timer) {
+            if (trap != null && player.getPosition().equals(trap.getPosition())) {
+                blitter.setMessage("Trap sprung.");
+                player.hit(trap.getDamage());
+                trap = null;
+
+            }
+            player.is_dead();
             updateItemsAndInventory();
             updateScreen();
             window.repaint();
@@ -87,6 +115,7 @@ public class GameManager implements ActionListener {
             if (player.getPosition().equals(item.getPosition())) {
                 player.addToInventory(item);
                 itemList.remove(item);
+                blitter.setMessage("Item picked up.");
             }
         }
     }
