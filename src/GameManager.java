@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 
 public class GameManager implements ActionListener {
-    private Map map;
+    private IMap map;
     private IPlayer player;
     private LinkedList<IItem> itemList;
     private ITrap trap;
@@ -19,7 +19,7 @@ public class GameManager implements ActionListener {
     private int targetColumn;
     private char[][] drawableRepresentation;
 
-    private GameManager() throws IOException, FontFormatException {
+    GameManager() throws IOException, FontFormatException {
         map = new Map();
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
@@ -118,5 +118,21 @@ public class GameManager implements ActionListener {
                 blitter.setMessage("Item picked up.");
             }
         }
+    }
+
+    void setMap(IMap map) {
+        this.map = map;
+    }
+
+    void setPlayer(IPlayer player) {
+        this.player = player;
+    }
+
+    void setItems(LinkedList<IItem> items) {
+        this.itemList = items;
+    }
+
+    void setTrap(ITrap trap) {
+        this.trap = trap;
     }
 }

@@ -1,36 +1,46 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapTest {
 
-//    @Test
-//    void drawableRepresentation_MapFilledWithDots_DotMapWithPlayerAndItem() {
-//        Map testMap = new Map();
-//        testMap.setMap(dotMapData());
-//        IPlayer fakePlayer = new FakePlayer();
-//        LinkedList<IItem> fakeItemList = new LinkedList<>();
-//        fakeItemList.add(new FakeItem(new Coordinate(2,2)));
-//        ITrap fakeTrap = new FakeTrap();
-//
-//        char[][] result = GameManager.drawableRepresentation(testMap, fakePlayer, fakeItemList, fakeTrap);
-//
-//        assertEquals('.', result[0][0]);
-//        assertEquals('€', result[1][1]);
-//        assertEquals('$', result[2][2]);
-//        assertEquals('*', result[3][2]);
-//        assertEquals('.', result[5][5]);
-//    }
+    @Test
+    void generatedMap_RunItWith4By4_ReturnsSquareRoom() {
+        Map testMap = new Map();
 
-    private char[][] dotMapData() {
-        char[][] result = new char[10][10];
-        for (char[] row : result) {
-            Arrays.fill(row, '.');
+        char[][] result = testMap.generatedMap(4, 4);
+
+        char[][] squareRoom = new char[][]{
+                {'#', '#', '#', '#'},
+                {'#', '.', '.', '#'},
+                {'#', '.', '.', '#'},
+                {'#', '#', '#', '#'},
+        };
+
+
+        for (int i = 0; i < squareRoom.length; i++) {
+            assertArrayEquals(squareRoom[i], result[i]);
         }
-        return result;
+    }
+
+    @Test
+    void generatedMap_RunItWith5By6_ReturnsSquareRoom() {
+        Map testMap = new Map();
+
+        char[][] result = testMap.generatedMap(5, 6);
+
+        char[][] squareRoom = new char[][]{
+                {'#', '#', '#', '#', '#', '#'},
+                {'#', '.', '.', '.', '.', '#'},
+                {'#', '.', '.', '.', '.', '#'},
+                {'#', '.', '.', '.', '.', '#'},
+                {'#', '#', '#', '#', '#', '#'},
+        };
+
+
+        for (int i = 0; i < squareRoom.length; i++) {
+            assertArrayEquals(squareRoom[i], result[i]);
+        }
     }
 
     @Test
@@ -60,57 +70,5 @@ class MapTest {
         assertFalse(result);
     }
 
-    private class FakePlayer implements IPlayer {
-        @Override
-        public Coordinate getPosition() {
-            return new Coordinate(1,1);
-        }
 
-        @Override
-        public char getSymbol() {
-            return '€';
-        }
-
-        @Override
-        public void moveTo(int row, int column) {
-
-        }
-
-        @Override
-        public void addToInventory(IItem item) {
-
-        }
-
-        @Override
-        public boolean inventoryContains(Placeable item) {
-            return false;
-        }
-
-        @Override
-        public void hit(int damage) {
-
-        }
-
-        @Override
-        public void is_dead() {
-
-        }
-    }
-
-    private class FakeTrap implements ITrap {
-        @Override
-        public Coordinate getPosition() {
-            return new Coordinate(3, 2);
-        }
-
-        @Override
-        public char getSymbol() {
-            return '*';
-        }
-
-        @Override
-        public int getDamage() {
-            return 0;
-        }
-    }
 }
