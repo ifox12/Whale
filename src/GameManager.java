@@ -24,7 +24,11 @@ public class GameManager implements ActionListener {
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
         itemList.add(new Item(new Coordinate(2, 1)));
-        trap = new Trap(new Coordinate(3,2));
+        try {
+            trap = new Trap(new Coordinate(3,2), new TrapType("spike"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         blitter = new Blitter();
         window = new Window();
         updateScreen();
