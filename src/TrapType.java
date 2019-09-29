@@ -15,4 +15,8 @@ class TrapType {
             throw new Exception("unknown trap type");
         }
     }
+
+    int getDamage() {
+        return damage;
+    }
 }

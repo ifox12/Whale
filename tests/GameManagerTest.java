@@ -82,11 +82,6 @@ public class GameManagerTest {
         }
 
         @Override
-        public int getDamage() {
-            return 0;
-        }
-
-        @Override
         public Coordinate trapTriggerLocationPossibility() {
             return null;
         }
@@ -98,6 +93,11 @@ public class GameManagerTest {
 
         @Override
         public Placeable getTrigger() {
+            return null;
+        }
+
+        @Override
+        public TrapType getType() {
             return null;
         }
     }

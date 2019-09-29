@@ -2,18 +2,12 @@ import java.util.Random;
 
 public class Trap implements ITrap {
     private Coordinate position;
-    private int damage;
     private TrapType type;
     private TrapTrigger trigger;
 
     Trap(Coordinate position, TrapType type) {
         this.position = position;
-        damage = 10;
         this.type = type;
-    }
-
-    public int getDamage() {
-        return damage;
     }
 
     @Override
@@ -42,5 +36,10 @@ public class Trap implements ITrap {
     @Override
     public Placeable getTrigger() {
         return trigger;
+    }
+
+    @Override
+    public TrapType getType() {
+        return type;
     }
 }

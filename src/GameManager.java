@@ -109,7 +109,7 @@ public class GameManager implements ActionListener {
         if (event.getSource() == timer) {
             if (trap != null && player.getPosition().equals(trap.getTrigger().getPosition())) {
                 blitter.setMessage("Trap sprung.");
-                player.hit(trap.getDamage());
+                player.hit(trap.getType().getDamage());
                 trap = null;
 
             }
