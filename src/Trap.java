@@ -2,13 +2,10 @@ public class Trap implements ITrap {
     private Coordinate position;
     private TrapType type;
     private TrapTrigger trigger;
-    private Gap gapToTrigger;
 
     Trap(Coordinate position, TrapType type) {
         this.position = position;
         this.type = type;
-        // TODO make GapType dependent of TrapType
-        this.gapToTrigger = new DistanceGap();
     }
 
     @Override
@@ -22,7 +19,7 @@ public class Trap implements ITrap {
     }
 
     public Coordinate trapTriggerLocationPossibility() {
-        return gapToTrigger.validPosition(position);
+        return type.gapToTrigger.validPosition(position);
     }
 
     public void connectTrapTrigger(Coordinate triggerPosition) {

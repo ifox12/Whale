@@ -11,6 +11,7 @@ public class GameManager implements ActionListener {
     private IPlayer player;
     private LinkedList<IItem> itemList;
     private ITrap trap;
+    private ITrap trap2;
     private Window window;
     private Blitter blitter;
     private Input input;
@@ -29,14 +30,23 @@ public class GameManager implements ActionListener {
         itemList.add(new Item(new Coordinate(2, 1)));
         try {
             trap = new Trap(new Coordinate(3,2), new TrapType("spike"));
+            trap2 = new Trap(new Coordinate(6, 5), new TrapType("spiked_board"));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Coordinate possibleTriggerLocation = trap.trapTriggerLocationPossibility();
         while (!map.isCellEmpty(possibleTriggerLocation)) {
             possibleTriggerLocation = trap.trapTriggerLocationPossibility();
         }
         trap.connectTrapTrigger(possibleTriggerLocation);
+
+        possibleTriggerLocation = trap2.trapTriggerLocationPossibility();
+        while (!map.isCellEmpty(possibleTriggerLocation)) {
+            possibleTriggerLocation = trap2.trapTriggerLocationPossibility();
+        }
+        trap2.connectTrapTrigger(possibleTriggerLocation);
+
         blitter = new Blitter(NUM_OF_ROWS, NUM_OF_COLUMNS);
         window = new Window();
         updateScreen();
@@ -54,6 +64,10 @@ public class GameManager implements ActionListener {
         if (trap != null) {
             addToDrawableMap(trap);
             addToDrawableMap(trap.getTrigger());
+        }
+        if (trap2 != null) {
+            addToDrawableMap(trap2);
+            addToDrawableMap(trap2.getTrigger());
         }
         addToDrawableMap(player);
         return drawableRepresentation;
