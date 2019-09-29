@@ -12,6 +12,7 @@ public class GameManager implements ActionListener {
     private LinkedList<IItem> itemList;
     private ITrap trap;
     private ITrap trap2;
+    private ITrap trap3;
     private Window window;
     private Blitter blitter;
     private Input input;
@@ -28,24 +29,14 @@ public class GameManager implements ActionListener {
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
         itemList.add(new Item(new Coordinate(2, 1)));
+
         try {
-            trap = new Trap(new Coordinate(3,2), new TrapType("spike"));
-            trap2 = new Trap(new Coordinate(6, 5), new TrapType("spiked_board"));
+            trap = makeTrap(new Coordinate(3, 2), new TrapType("spike"));
+            trap2 = makeTrap(new Coordinate(6, 5), new TrapType("spiked_board"));
+            trap3 = makeTrap(new Coordinate(9, 9), new TrapType("dart"));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Coordinate possibleTriggerLocation = trap.trapTriggerLocationPossibility();
-        while (!map.isCellEmpty(possibleTriggerLocation)) {
-            possibleTriggerLocation = trap.trapTriggerLocationPossibility();
-        }
-        trap.connectTrapTrigger(possibleTriggerLocation);
-
-        possibleTriggerLocation = trap2.trapTriggerLocationPossibility();
-        while (!map.isCellEmpty(possibleTriggerLocation)) {
-            possibleTriggerLocation = trap2.trapTriggerLocationPossibility();
-        }
-        trap2.connectTrapTrigger(possibleTriggerLocation);
 
         blitter = new Blitter(NUM_OF_ROWS, NUM_OF_COLUMNS);
         window = new Window();
@@ -54,6 +45,16 @@ public class GameManager implements ActionListener {
         input.setUpInput(this, window);
         timer = new Timer(16, this);
         timer.start();
+    }
+
+    private ITrap makeTrap(Coordinate position, TrapType type) {
+        ITrap trap = new Trap(position, type);
+        Coordinate possibleTriggerLocation = trap.trapTriggerLocationPossibility();
+        while (!map.isCellEmpty(possibleTriggerLocation)) {
+            possibleTriggerLocation = trap.trapTriggerLocationPossibility();
+        }
+        trap.connectTrapTrigger(possibleTriggerLocation);
+        return trap;
     }
 
     char[][] prepareMapForBlitting() {
@@ -68,6 +69,10 @@ public class GameManager implements ActionListener {
         if (trap2 != null) {
             addToDrawableMap(trap2);
             addToDrawableMap(trap2.getTrigger());
+        }
+        if (trap3 != null) {
+            addToDrawableMap(trap3);
+            addToDrawableMap(trap3.getTrigger());
         }
         addToDrawableMap(player);
         return drawableRepresentation;
