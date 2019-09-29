@@ -1,13 +1,14 @@
-import java.util.Random;
-
 public class Trap implements ITrap {
     private Coordinate position;
     private TrapType type;
     private TrapTrigger trigger;
+    private Gap gapToTrigger;
 
     Trap(Coordinate position, TrapType type) {
         this.position = position;
         this.type = type;
+        // TODO make GapType dependent of TrapType
+        this.gapToTrigger = new DistanceGap();
     }
 
     @Override
@@ -21,12 +22,7 @@ public class Trap implements ITrap {
     }
 
     public Coordinate trapTriggerLocationPossibility() {
-        Random rng = new Random();
-        Coordinate result = new Coordinate();
-        //TODO make deviation (4) a field of the Trap Class
-        result.setRow(position.row() + rng.nextInt(8) - 4);
-        result.setColumn(position.column() + rng.nextInt(8) - 4);
-        return result;
+        return gapToTrigger.validPosition(position);
     }
 
     public void connectTrapTrigger(Coordinate triggerPosition) {

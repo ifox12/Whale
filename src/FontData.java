@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class FontData {
+class FontData {
     private final String fontFileName;
     Font font;
 
