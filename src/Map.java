@@ -1,12 +1,13 @@
 public class Map implements IMap {
 
+    private final int ROWS;
+    private final int COLUMNS;
     private char[][] map;
-    private int ROWS;
-    private int COLUMNS;
 
-    Map() {
-        // TODO make these values correspond to surface size
-        map = generatedMap(6,6);
+    Map(int rows, int columns) {
+        ROWS = rows;
+        COLUMNS = columns;
+        map = generatedMap();
     }
 
     public char[][] getDrawableMap() {
@@ -17,9 +18,7 @@ public class Map implements IMap {
         return result;
     }
 
-    char[][] generatedMap(final int rows, final int columns) {
-        this.ROWS = rows;
-        this.COLUMNS = columns;
+    char[][] generatedMap() {
         char[][] result = new char[ROWS][COLUMNS];
         for (int row = 0; row < ROWS; row++) {
             for (int column = 0; column < COLUMNS; column++) {

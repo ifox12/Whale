@@ -2,9 +2,11 @@ public class TrapTrigger implements Placeable {
 
     private final char symbol = 'O';
     private Coordinate position;
+    private int weight;
 
     TrapTrigger(Coordinate position) {
         this.position = position;
+        this.weight = 10;
     }
 
     @Override

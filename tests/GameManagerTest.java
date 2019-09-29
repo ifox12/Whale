@@ -1,29 +1,36 @@
+import org.junit.jupiter.api.Test;
+
+import java.awt.*;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
 
-public class GameManagerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//    @Test
-//    void drawableRepresentation_MapFilledWithDots_DotMapWithPlayerAndItem() throws IOException, FontFormatException {
-//        GameManager testManager = new GameManager();
-//        IMap fakeMap = new FakeMap();
-//        fakeMap.setMap(dotMapData());
-//        IPlayer fakePlayer = new FakePlayer();
-//        LinkedList<IItem> fakeItemList = new LinkedList<>();
-//        fakeItemList.add(new FakeItem(new Coordinate(2, 2)));
-//        ITrap fakeTrap = new FakeTrap();
-//        testManager.setMap(fakeMap);
-//        testManager.setPlayer(fakePlayer);
-//        testManager.setItems(fakeItemList);
-//        testManager.setTrap(fakeTrap);
-//
-//        char[][] result = testManager.prepareMapForBlitting();
-//
-//        assertEquals('.', result[0][0]);
-//        assertEquals('€', result[1][1]);
-//        assertEquals('$', result[2][2]);
-//        assertEquals('*', result[3][2]);
-//        assertEquals('.', result[5][5]);
-//    }
+class GameManagerTest {
+
+    @Test
+    void drawableRepresentation_MapFilledWithDots_DotMapWithPlayerAndItem() throws IOException, FontFormatException {
+        GameManager testManager = new GameManager();
+        IMap fakeMap = new FakeMap();
+        fakeMap.setMap(dotMapData());
+        IPlayer fakePlayer = new FakePlayer();
+        LinkedList<IItem> fakeItemList = new LinkedList<>();
+        fakeItemList.add(new FakeItem(new Coordinate(2, 2)));
+        ITrap fakeTrap = new FakeTrap();
+        testManager.setMap(fakeMap);
+        testManager.setPlayer(fakePlayer);
+        testManager.setItems(fakeItemList);
+        testManager.setTrap(fakeTrap);
+
+        char[][] result = testManager.prepareMapForBlitting();
+
+        assertEquals('.', result[0][0]);
+        assertEquals('€', result[1][1]);
+        assertEquals('$', result[2][2]);
+        assertEquals('*', result[3][2]);
+        assertEquals('.', result[5][5]);
+    }
 
     private char[][] dotMapData() {
         char[][] result = new char[10][10];

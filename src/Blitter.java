@@ -2,21 +2,23 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class Blitter {
+class Blitter {
     private BufferedImage img;
     private Graphics2D gfx;
     private FontData fontData;
-    private final int NUM_OF_ROWS = 6;
-    private final int NUM_OF_COLUMNS = 6;
+    private final int NUM_OF_ROWS;
+    private final int NUM_OF_COLUMNS;
 
-    public void setMessage(String message) {
-        this.message = message;
+    Blitter(int rows, int columns) throws IOException, FontFormatException {
+        setFontData(new FontData("DejaVuSansMono.ttf"));
+        this.NUM_OF_ROWS = rows;
+        this.NUM_OF_COLUMNS = columns;
     }
 
     private String message = "";
 
-    Blitter() throws IOException, FontFormatException {
-        setFontData(new FontData("DejaVuSansMono.ttf"));
+    void setMessage(String message) {
+        this.message = message;
     }
 
     Image calculateScreen(char[][] drawableMap) {
@@ -67,28 +69,27 @@ public class Blitter {
         getGfx().drawString(String.valueOf(glyph), 0, getFontData().fontAscent);
     }
 
-
-    public BufferedImage getImg() {
+    private BufferedImage getImg() {
         return img;
     }
 
-    public void setImg(BufferedImage img) {
+    private void setImg(BufferedImage img) {
         this.img = img;
     }
 
-    public Graphics2D getGfx() {
+    private Graphics2D getGfx() {
         return gfx;
     }
 
-    public void setGfx(Graphics2D gfx) {
+    private void setGfx(Graphics2D gfx) {
         this.gfx = gfx;
     }
 
-    public FontData getFontData() {
+    private FontData getFontData() {
         return fontData;
     }
 
-    public void setFontData(FontData fontData) {
+    private void setFontData(FontData fontData) {
         this.fontData = fontData;
     }
 

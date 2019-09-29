@@ -6,9 +6,9 @@ class MapTest {
 
     @Test
     void generatedMap_RunItWith4By4_ReturnsSquareRoom() {
-        Map testMap = new Map();
+        Map testMap = new Map(4, 4);
 
-        char[][] result = testMap.generatedMap(4, 4);
+        char[][] result = testMap.generatedMap();
 
         char[][] squareRoom = new char[][] {
                 {'#', '#', '#', '#'},
@@ -25,9 +25,9 @@ class MapTest {
 
     @Test
     void generatedMap_RunItWith5By6_ReturnsSquareRoom() {
-        Map testMap = new Map();
+        Map testMap = new Map(5, 6);
 
-        char[][] result = testMap.generatedMap(5, 6);
+        char[][] result = testMap.generatedMap();
 
         char[][] squareRoom = new char[][] {
                 {'#', '#', '#', '#', '#', '#'},
@@ -45,7 +45,7 @@ class MapTest {
 
     @Test
     void isCellEmpty_InaccessibleCell_ReturnFalse() {
-        Map testMap = new Map();
+        Map testMap = new Map(6, 6);
 
         boolean result = testMap.isCellEmpty(0, 0);
 
@@ -54,7 +54,7 @@ class MapTest {
 
     @Test
     void isCellEmpty_EmptyCell_ReturnTrue() {
-        Map testMap = new Map();
+        Map testMap = new Map(6, 6);
 
         boolean result = testMap.isCellEmpty(2, 1);
 
@@ -63,7 +63,7 @@ class MapTest {
 
     @Test
     void isCellEmpty_OutOfBounds_ReturnFalse() {
-        Map testMap = new Map();
+        Map testMap = new Map(6, 6);
 
         boolean result = testMap.isCellEmpty(9999, 9999);
 
@@ -72,7 +72,7 @@ class MapTest {
 
     @Test
     void isCellEmpty_NegativeOutOfBounds_ReturnFalse() {
-        Map testMap = new Map();
+        Map testMap = new Map(6, 6);
 
         boolean result = testMap.isCellEmpty(-1, -1);
 

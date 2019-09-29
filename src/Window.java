@@ -11,7 +11,7 @@ class Window extends JFrame {
         this.setScreen(screen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setSize(200, 200);
+        setSize(400, 400);
         setLocationRelativeTo(null);
         add(panel);
 

@@ -18,9 +18,12 @@ public class GameManager implements ActionListener {
     private int targetRow;
     private int targetColumn;
     private char[][] drawableRepresentation;
+    private final int NUM_OF_ROWS = 12;
+    private final int NUM_OF_COLUMNS = 12;
+    private LinkedList<IItem> items;
 
-    private GameManager() throws IOException, FontFormatException {
-        map = new Map();
+    GameManager() throws IOException, FontFormatException {
+        map = new Map(NUM_OF_ROWS, NUM_OF_COLUMNS);
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
         itemList.add(new Item(new Coordinate(2, 1)));
@@ -34,7 +37,7 @@ public class GameManager implements ActionListener {
             possibleTriggerLocation = trap.trapTriggerLocationPossibility();
         }
         trap.connectTrapTrigger(possibleTriggerLocation);
-        blitter = new Blitter();
+        blitter = new Blitter(NUM_OF_ROWS, NUM_OF_COLUMNS);
         window = new Window();
         updateScreen();
         input = new Input();
@@ -43,7 +46,7 @@ public class GameManager implements ActionListener {
         timer.start();
     }
 
-    private char[][] prepareMapForBlitting() {
+    char[][] prepareMapForBlitting() {
         drawableRepresentation = map.getDrawableMap();
         for (IItem item : itemList) {
             addToDrawableMap(item);
@@ -128,5 +131,21 @@ public class GameManager implements ActionListener {
                 blitter.setMessage("Item picked up.");
             }
         }
+    }
+
+    public void setMap(IMap map) {
+        this.map = map;
+    }
+
+    public void setPlayer(IPlayer player) {
+        this.player = player;
+    }
+
+    public void setItems(LinkedList<IItem> items) {
+        this.items = items;
+    }
+
+    public void setTrap(ITrap trap) {
+        this.trap = trap;
     }
 }
