@@ -19,7 +19,7 @@ public class GameManager implements ActionListener {
     private int targetColumn;
     private char[][] drawableRepresentation;
 
-    GameManager() throws IOException, FontFormatException {
+    private GameManager() throws IOException, FontFormatException {
         map = new Map();
         player = new Player(new Coordinate(3, 3));
         itemList = new LinkedList<>();
@@ -29,6 +29,11 @@ public class GameManager implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Coordinate possibleTriggerLocation = trap.trapTriggerLocationPossibility();
+        while (!map.isCellEmpty(possibleTriggerLocation)) {
+            possibleTriggerLocation = trap.trapTriggerLocationPossibility();
+        }
+        trap.connectTrapTrigger(possibleTriggerLocation);
         blitter = new Blitter();
         window = new Window();
         updateScreen();
@@ -38,13 +43,14 @@ public class GameManager implements ActionListener {
         timer.start();
     }
 
-    char[][] prepareMapForBlitting() {
+    private char[][] prepareMapForBlitting() {
         drawableRepresentation = map.getDrawableMap();
         for (IItem item : itemList) {
             addToDrawableMap(item);
         }
         if (trap != null) {
             addToDrawableMap(trap);
+            addToDrawableMap(trap.getTrigger());
         }
         addToDrawableMap(player);
         return drawableRepresentation;
@@ -101,7 +107,7 @@ public class GameManager implements ActionListener {
 
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == timer) {
-            if (trap != null && player.getPosition().equals(trap.getPosition())) {
+            if (trap != null && player.getPosition().equals(trap.getTrigger().getPosition())) {
                 blitter.setMessage("Trap sprung.");
                 player.hit(trap.getDamage());
                 trap = null;
@@ -122,21 +128,5 @@ public class GameManager implements ActionListener {
                 blitter.setMessage("Item picked up.");
             }
         }
-    }
-
-    void setMap(IMap map) {
-        this.map = map;
-    }
-
-    void setPlayer(IPlayer player) {
-        this.player = player;
-    }
-
-    void setItems(LinkedList<IItem> items) {
-        this.itemList = items;
-    }
-
-    void setTrap(ITrap trap) {
-        this.trap = trap;
     }
 }

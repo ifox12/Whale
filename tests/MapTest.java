@@ -10,7 +10,7 @@ class MapTest {
 
         char[][] result = testMap.generatedMap(4, 4);
 
-        char[][] squareRoom = new char[][]{
+        char[][] squareRoom = new char[][] {
                 {'#', '#', '#', '#'},
                 {'#', '.', '.', '#'},
                 {'#', '.', '.', '#'},
@@ -29,7 +29,7 @@ class MapTest {
 
         char[][] result = testMap.generatedMap(5, 6);
 
-        char[][] squareRoom = new char[][]{
+        char[][] squareRoom = new char[][] {
                 {'#', '#', '#', '#', '#', '#'},
                 {'#', '.', '.', '.', '.', '#'},
                 {'#', '.', '.', '.', '.', '#'},
@@ -66,6 +66,15 @@ class MapTest {
         Map testMap = new Map();
 
         boolean result = testMap.isCellEmpty(9999, 9999);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void isCellEmpty_NegativeOutOfBounds_ReturnFalse() {
+        Map testMap = new Map();
+
+        boolean result = testMap.isCellEmpty(-1, -1);
 
         assertFalse(result);
     }

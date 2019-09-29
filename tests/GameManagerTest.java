@@ -85,6 +85,21 @@ public class GameManagerTest {
         public int getDamage() {
             return 0;
         }
+
+        @Override
+        public Coordinate trapTriggerLocationPossibility() {
+            return null;
+        }
+
+        @Override
+        public void connectTrapTrigger(Coordinate triggerPosition) {
+
+        }
+
+        @Override
+        public Placeable getTrigger() {
+            return null;
+        }
     }
 
     private class FakeMap implements IMap {
@@ -101,6 +116,11 @@ public class GameManagerTest {
         @Override
         public char[][] getDrawableMap() {
             return new char[0][];
+        }
+
+        @Override
+        public boolean isCellEmpty(Coordinate position) {
+            return false;
         }
     }
 }

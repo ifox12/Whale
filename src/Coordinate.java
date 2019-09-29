@@ -2,6 +2,11 @@ public class Coordinate {
     private int row;
     private int column;
 
+    Coordinate() {
+        row = 0;
+        column = 0;
+    }
+
     Coordinate(int row, int column) {
         this.row = row;
         this.column = column;
@@ -13,6 +18,14 @@ public class Coordinate {
 
     int column() {
         return column;
+    }
+
+    void setRow(int row) {
+        this.row = row;
+    }
+
+    void setColumn(int column) {
+        this.column = column;
     }
 
     @Override

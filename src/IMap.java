@@ -4,4 +4,6 @@ interface IMap {
     void setMap(char[][] mapData);
 
     char[][] getDrawableMap();
+
+    boolean isCellEmpty(Coordinate position);
 }

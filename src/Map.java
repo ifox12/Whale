@@ -1,10 +1,11 @@
 public class Map implements IMap {
 
-     char[][] map;
-     int ROWS;
-     int COLUMNS;
+    private char[][] map;
+    private int ROWS;
+    private int COLUMNS;
 
     Map() {
+        // TODO make these values correspond to surface size
         map = generatedMap(6,6);
     }
 
@@ -49,11 +50,16 @@ public class Map implements IMap {
 
     @Override
     public boolean isCellEmpty(int row, int column) {
-        if (row < map.length && column < map[row].length) {
-            return map[row][column] == '.';
-        } else {
-            return false;
+        if (row >= 0 && column >= 0) {
+            if (row < map.length && column < map[row].length) {
+                return map[row][column] == '.';
+            }
         }
+        return false;
+    }
+
+    public boolean isCellEmpty(Coordinate position) {
+        return isCellEmpty(position.row(), position.column());
     }
 
 }
