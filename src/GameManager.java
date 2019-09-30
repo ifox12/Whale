@@ -131,6 +131,7 @@ public class GameManager implements ActionListener {
         if (event.getSource() == timer) {
             if (trap != null && player.getPosition().equals(trap.getTrigger().getPosition())) {
                 blitter.setMessage("Trap sprung.");
+                // TODO apply damage to entity on specific field, not just player (to have traps hit enemies/other traps etc)
                 player.hit(trap.getType().getDamage());
                 trap = null;
 
