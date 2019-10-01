@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class JavaRNG implements RNG {
     final private int PRECISION = 1000;
-    Random rng;
+    final private Random rng;
 
     JavaRNG() {
         rng = new Random();
@@ -35,15 +35,9 @@ public class JavaRNG implements RNG {
             throw new IllegalArgumentException("upper must be greater than lower");
         } else {
             int resultInt = rng.nextInt((upper - lower) * PRECISION) + lower * PRECISION;
-            System.out.println((double) resultInt / PRECISION);
 
             return (double) resultInt / PRECISION;
         }
-    }
-
-    @Override
-    public boolean fiftyFiftyChance() {
-        return returnTrueWithChanceOf(0.5);
     }
 
     @Override

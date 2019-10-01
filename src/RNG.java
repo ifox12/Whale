@@ -5,7 +5,5 @@ public interface RNG {
 
     double doubleInRange(int lower, int upper);
 
-    boolean fiftyFiftyChance();
-
     boolean returnTrueWithChanceOf(double chance);
 }

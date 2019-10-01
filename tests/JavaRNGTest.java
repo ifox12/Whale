@@ -73,7 +73,6 @@ class JavaRNGTest {
         assertTrue(result <= 1);
     }
 
-    // TODO not working yet
     @RepeatedTest(10)
     void doubleInRange_5To10_Between5And10() {
         JavaRNG testRng = new JavaRNG();
