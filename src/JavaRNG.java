@@ -18,23 +18,25 @@ public class JavaRNG implements RNG {
     }
 
     @Override
-    public double doubleInRangeInclusive(double lower, double upper) {
+    public double doubleInRange(double lower, double upper) {
         if (lower > upper) {
             throw new IllegalArgumentException("upper must be greater than lower");
         } else {
             int lowerInt = (int) (lower * PRECISION);
             int upperInt = (int) (upper * PRECISION);
-            int resultInt = rng.nextInt((upperInt - lowerInt) + 1) + lowerInt;
+            int resultInt = rng.nextInt((upperInt - lowerInt)) + lowerInt;
             return (double) resultInt / PRECISION;
         }
     }
 
     @Override
-    public double doubleInRangeInclusive(int lower, int upper) {
+    public double doubleInRange(int lower, int upper) {
         if (lower > upper) {
             throw new IllegalArgumentException("upper must be greater than lower");
         } else {
-            int resultInt = rng.nextInt((upper - lower) * PRECISION + 1) + lower * PRECISION;
+            int resultInt = rng.nextInt((upper - lower) * PRECISION) + lower * PRECISION;
+            System.out.println((double) resultInt / PRECISION);
+
             return (double) resultInt / PRECISION;
         }
     }
@@ -44,13 +46,8 @@ public class JavaRNG implements RNG {
         return returnTrueWithChanceOf(0.5);
     }
 
-    // TODO because of upper inclusive bound this is not equally likely for 0.5
     @Override
     public boolean returnTrueWithChanceOf(double chance) {
-        if (doubleInRangeInclusive(0, 1) >= chance) {
-            return false;
-        } else {
-            return true;
-        }
+        return (doubleInRange(0, 1) < chance);
     }
 }

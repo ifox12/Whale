@@ -57,7 +57,7 @@ class JavaRNGTest {
     void doubleInRange_4To5_Between1And5() {
         JavaRNG testRng = new JavaRNG();
 
-        double result = testRng.doubleInRangeInclusive(4, 5);
+        double result = testRng.doubleInRange(4, 5);
 
         assertTrue(result >= 4);
         assertTrue(result <= 5);
@@ -67,7 +67,7 @@ class JavaRNGTest {
     void doubleInRange_0To1_Between0And1() {
         JavaRNG testRng = new JavaRNG();
 
-        double result = testRng.doubleInRangeInclusive(0, 1);
+        double result = testRng.doubleInRange(0, 1);
 
         assertTrue(result >= 0);
         assertTrue(result <= 1);
@@ -78,7 +78,7 @@ class JavaRNGTest {
     void doubleInRange_5To10_Between5And10() {
         JavaRNG testRng = new JavaRNG();
 
-        double result = testRng.doubleInRangeInclusive(5, 10);
+        double result = testRng.doubleInRange(5, 10);
 
         assertTrue(result >= 5);
         assertTrue(result <= 10);
@@ -88,7 +88,7 @@ class JavaRNGTest {
     void doubleInRange_0dTo1d_Between0And1() {
         JavaRNG testRng = new JavaRNG();
 
-        double result = testRng.doubleInRangeInclusive(0d, 1d);
+        double result = testRng.doubleInRange(0d, 1d);
 
         assertTrue(result >= 0);
         assertTrue(result <= 1);
@@ -99,7 +99,7 @@ class JavaRNGTest {
     void returnTrueWithChanceOf_100Percent_ReturnsTrue() {
         JavaRNG testRng = new JavaRNG();
 
-        boolean result = testRng.returnTrueWithChanceOf(1);
+        boolean result = testRng.returnTrueWithChanceOf(1.0);
 
         assertTrue(result);
     }
@@ -108,8 +108,24 @@ class JavaRNGTest {
     void returnTrueWithChanceOf_0Percent_ReturnsFalse() {
         JavaRNG testRng = new JavaRNG();
 
-        boolean result = testRng.returnTrueWithChanceOf(0);
+        boolean result = testRng.returnTrueWithChanceOf(0.0);
+
 
         assertFalse(result);
+    }
+
+    @RepeatedTest(10)
+    void returnTrueWithChanceOf_50Percent_Roughly50PercentTrues_SometimesFailsDueToExtremeOutliers() {
+        JavaRNG testRng = new JavaRNG();
+
+        int trueCounter = 0;
+        for (int i = 0; i < 100; i++) {
+            if (testRng.returnTrueWithChanceOf(0.5)) {
+                trueCounter++;
+            }
+        }
+
+        assertTrue(trueCounter >= 32);
+        assertTrue(trueCounter <= 68);
     }
 }
