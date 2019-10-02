@@ -22,22 +22,23 @@ public class JavaRNG implements RNG {
         if (lower > upper) {
             throw new IllegalArgumentException("upper must be greater than lower");
         } else {
-            int lowerInt = (int) (lower * PRECISION);
-            int upperInt = (int) (upper * PRECISION);
-            int resultInt = rng.nextInt((upperInt - lowerInt)) + lowerInt;
-            return (double) resultInt / PRECISION;
+            int lowerInt = convertDoubleToIntWithSomePrecisionLoss(lower);
+            int upperInt = convertDoubleToIntWithSomePrecisionLoss(upper);
+            return fixedWidthDoubleInIntRange(lowerInt, upperInt);
         }
     }
 
-    @Override
-    public double doubleInRange(int lower, int upper) {
-        if (lower > upper) {
-            throw new IllegalArgumentException("upper must be greater than lower");
-        } else {
-            int resultInt = rng.nextInt((upper - lower) * PRECISION) + lower * PRECISION;
+    private int convertDoubleToIntWithSomePrecisionLoss(double input) {
+        return (int) (input * PRECISION);
+    }
 
-            return (double) resultInt / PRECISION;
-        }
+    private double convertToFixedWidthDouble(int input) {
+        return ((double) input) / PRECISION;
+    }
+
+    private double fixedWidthDoubleInIntRange(int lower, int upper) {
+        int resultInt = intInRange(lower, upper);
+        return convertToFixedWidthDouble(resultInt);
     }
 
     @Override

@@ -123,7 +123,7 @@ class JavaRNGTest {
                 trueCounter++;
             }
         }
-
+        System.out.println(trueCounter);
         assertTrue(trueCounter >= 32);
         assertTrue(trueCounter <= 68);
     }
