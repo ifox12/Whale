@@ -16,9 +16,6 @@ public class GameManager implements ActionListener {
     private IMap map;
     private IPlayer player;
     private LinkedList<IItem> itemList;
-    private ITrap trap;
-    private ITrap trap2;
-    private ITrap trap3;
     private List<ITrap> traps;
     private Window window;
     private Blitter blitter;
@@ -170,9 +167,5 @@ public class GameManager implements ActionListener {
 
     public void setItems(LinkedList<IItem> items) {
         this.items = items;
-    }
-
-    public void setTrap(ITrap trap) {
-        this.trap = trap;
     }
 }
