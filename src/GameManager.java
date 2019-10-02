@@ -33,9 +33,9 @@ public class GameManager implements ActionListener {
         itemList.add(new Item(new Coordinate(2, 1)));
 
         try {
-            trap = makeTrap(new Coordinate(3, 2), new TrapType("spike"));
-            trap2 = makeTrap(new Coordinate(6, 5), new TrapType("spiked_board"));
-            trap3 = makeTrap(new Coordinate(9, 9), new TrapType("dart"));
+            trap = makeTrap(new Coordinate(3, 2), TrapType.Spike);
+            trap2 = makeTrap(new Coordinate(6, 5), TrapType.SpikedBoard);
+            trap3 = makeTrap(new Coordinate(9, 9), TrapType.Dart);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,24 +1,15 @@
-class TrapType {
+enum TrapType {
+    Spike(10, new NoGap(), 0),
+    SpikedBoard(40, new DistanceGap(), 3),
+    Dart(10, new CardinalGap(), 4);
 
     private int damage;
     Gap gapToTrigger;
 
-
-    TrapType(String name) throws Exception {
-        if (name.equals("spike")) {
-            damage = 10;
-            this.gapToTrigger = new NoGap();
-        } else if (name.equals("spiked_board")) {
-            damage = 40;
-            this.gapToTrigger = new DistanceGap();
-            this.gapToTrigger.setDistance(3);
-        } else if (name.equals("dart")) {
-            damage = 10;
-            this.gapToTrigger = new CardinalGap();
-            this.gapToTrigger.setDistance(4);
-        } else {
-            throw new Exception("unknown trap type");
-        }
+    TrapType(int damage, Gap gappingType, int gappingDistance) {
+        gapToTrigger = gappingType;
+        gapToTrigger.setDistance(gappingDistance);
+        this.damage = damage;
     }
 
     int getDamage() {
