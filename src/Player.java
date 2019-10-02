@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 import java.util.LinkedList;
 
 class Player implements IPlayer {

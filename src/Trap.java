@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 public class Trap implements ITrap {
     private Coordinate position;
     private TrapType type;

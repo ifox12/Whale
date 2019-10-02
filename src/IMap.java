@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 interface IMap {
     boolean isCellEmpty(int x, int y);
 

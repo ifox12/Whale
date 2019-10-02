@@ -1,3 +1,5 @@
+package whale.util;
+
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 

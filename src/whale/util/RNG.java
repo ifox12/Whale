@@ -1,3 +1,5 @@
+package whale.util;
+
 public interface RNG {
     int intInRange(int lower, int upper);
 

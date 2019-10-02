@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 public class TrapTrigger implements Placeable {
 
     private final char symbol = 'O';

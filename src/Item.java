@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 public class Item implements IItem {
 
     final char symbol = '$';

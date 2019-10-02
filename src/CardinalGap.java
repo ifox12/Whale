@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 import java.util.Random;
 
 public class CardinalGap implements Gap {

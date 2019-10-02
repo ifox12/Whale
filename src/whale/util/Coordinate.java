@@ -1,30 +1,32 @@
+package whale.util;
+
 public class Coordinate {
     private int row;
     private int column;
 
-    Coordinate() {
+    public Coordinate() {
         row = 0;
         column = 0;
     }
 
-    Coordinate(int row, int column) {
+    public Coordinate(int row, int column) {
         this.row = row;
         this.column = column;
     }
 
-    int row() {
+    public int row() {
         return row;
     }
 
-    int column() {
+    public int column() {
         return column;
     }
 
-    void setRow(int row) {
+    public void setRow(int row) {
         this.row = row;
     }
 
-    void setColumn(int column) {
+    public void setColumn(int column) {
         this.column = column;
     }
 

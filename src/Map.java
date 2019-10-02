@@ -1,3 +1,5 @@
+import whale.util.Coordinate;
+
 public class Map implements IMap {
 
     private final int ROWS;

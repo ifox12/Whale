@@ -1,3 +1,5 @@
+package whale.util;
+
 import java.util.Random;
 
 public class JavaRNG implements RNG {
