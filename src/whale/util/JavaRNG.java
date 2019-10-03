@@ -3,10 +3,10 @@ package whale.util;
 import java.util.Random;
 
 public class JavaRNG implements RNG {
-    final private int PRECISION = 1000;
-    final private Random rng;
+    private final int PRECISION = 1000;
+    private final Random rng;
 
-    JavaRNG() {
+    public JavaRNG() {
         rng = new Random();
     }
 

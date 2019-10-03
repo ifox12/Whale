@@ -69,7 +69,7 @@ class GameManagerTest {
         }
 
         @Override
-        public void is_dead() {
+        public void isDead() {
 
         }
     }
@@ -108,13 +108,8 @@ class GameManagerTest {
 
     private class FakeMap implements IMap {
         @Override
-        public boolean isCellEmpty(int x, int y) {
+        public boolean isCellEmpty(Coordinate coordinate) {
             return false;
-        }
-
-        @Override
-        public void setMap(char[][] mapData) {
-
         }
 
         @Override
@@ -123,8 +118,16 @@ class GameManagerTest {
         }
 
         @Override
-        public boolean isCellEmpty(Coordinate position) {
-            return false;
+        public void updateItemsAndInventory() {
+        }
+
+        @Override
+        public void updateTraps() {
+        }
+
+        @Override
+        public String getMessage() {
+            return null;
         }
     }
 }

@@ -5,37 +5,24 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
-
+// TODO make this testable!!!
 public class GameManager implements ActionListener {
     private final int NUM_OF_ROWS = 12;
     private final int NUM_OF_COLUMNS = 12;
     private IMap map;
-    private IPlayer player;
-    private LinkedList<IItem> itemList;
-    private List<ITrap> traps;
     private Window window;
     private Blitter blitter;
     private Input input;
     private Timer timer;
     private int targetRow;
     private int targetColumn;
-    private char[][] drawableRepresentation;
-    private LinkedList<IItem> items;
 
+    // TODO don't place player on traps or items or other things
+    // TODO unify the code to find an empty map field to place things on
+    // TODO have the map story the location of things (or the things as a placable layer)
     GameManager() throws IOException, FontFormatException {
         map = new Map(NUM_OF_ROWS, NUM_OF_COLUMNS);
-        player = new Player(new Coordinate(3, 3));
-        itemList = new LinkedList<>();
-        itemList.add(new Item(new Coordinate(2, 1)));
-
-        traps = new LinkedList<>();
-        traps.add(makeTrap(new Coordinate(3, 2), TrapType.Spike));
-        traps.add(makeTrap(new Coordinate(6, 5), TrapType.SpikedBoard));
-        traps.add(makeTrap(new Coordinate(9, 9), TrapType.Dart));
 
         blitter = new Blitter(NUM_OF_ROWS, NUM_OF_COLUMNS);
         window = new Window();
@@ -50,122 +37,62 @@ public class GameManager implements ActionListener {
         new GameManager();
     }
 
-    private ITrap makeTrap(Coordinate position, TrapType type) {
-        ITrap trap = new Trap(position, type);
-        Coordinate possibleTriggerLocation = trap.trapTriggerLocationPossibility();
-        while (!map.isCellEmpty(possibleTriggerLocation)) {
-            possibleTriggerLocation = trap.trapTriggerLocationPossibility();
-        }
-        trap.connectTrapTrigger(possibleTriggerLocation);
-        return trap;
-    }
-
-    char[][] prepareMapForBlitting() {
-        drawableRepresentation = map.getDrawableMap();
-        for (IItem item : itemList) {
-            addToDrawableMap(item);
-        }
-        for (ITrap trap : traps) {
-            addToDrawableMap(trap);
-            addToDrawableMap(trap.getTrigger());
-        }
-        addToDrawableMap(player);
-        return drawableRepresentation;
-    }
-
-    private void addToDrawableMap(Placeable placeable) {
-        int row = placeable.getPosition().row();
-        int column = placeable.getPosition().column();
-        drawableRepresentation[row][column] = placeable.getSymbol();
-    }
-
     private void updateScreen() {
-        final char[][] drawableMap = prepareMapForBlitting();
-        final Image surfaceToBlit = blitter.calculateScreen(drawableMap);
+        final Image surfaceToBlit = blitter.calculateScreen(map.getDrawableMap());
         window.setScreen(surfaceToBlit);
     }
 
     void moveLeftFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(targetRow, targetColumn - steps))
-            player.moveTo(targetRow, targetColumn - steps);
+        if (map.isCellEmpty(new Coordinate(targetRow, targetColumn - steps)))
+            getPlayer().moveTo(targetRow, targetColumn - steps);
     }
 
     private void extractPlayerPosition() {
-        targetRow = player.getPosition().row();
-        targetColumn = player.getPosition().column();
+        targetRow = getPlayer().getPosition().row();
+        targetColumn = getPlayer().getPosition().column();
     }
 
     void moveRightFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(targetRow, targetColumn + steps))
-            player.moveTo(targetRow, targetColumn + steps);
+        if (map.isCellEmpty(new Coordinate(targetRow, targetColumn + steps)))
+            getPlayer().moveTo(targetRow, targetColumn + steps);
     }
 
     void moveUpFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(targetRow - steps, targetColumn))
-            player.moveTo(targetRow - steps, targetColumn);
+        if (map.isCellEmpty(new Coordinate(targetRow - steps, targetColumn)))
+            getPlayer().moveTo(targetRow - steps, targetColumn);
     }
 
     void moveDownFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(targetRow + steps, targetColumn))
-            player.moveTo(targetRow + steps, targetColumn);
+        if (map.isCellEmpty(new Coordinate(targetRow + steps, targetColumn)))
+            getPlayer().moveTo(targetRow + steps, targetColumn);
     }
 
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == timer) {
 
-            updateTraps();
+            map.updateTraps();
 
-            player.is_dead();
+            getPlayer().isDead();
 
-            updateItemsAndInventory();
+            map.updateItemsAndInventory();
+
+            blitter.setMessage(map.getMessage());
 
             updateScreen();
             window.repaint();
         }
     }
 
-    private void updateTraps() {
-        Iterator<ITrap> i = traps.iterator();
-        ITrap trap;
-        while (i.hasNext()) {
-            trap = i.next();
-            if (player.getPosition().equals(trap.getTrigger().getPosition())) {
-                blitter.setMessage("Trap sprung: " + trap.getType());
-                // TODO apply damage to entity on specific field, not just player (to have traps hit enemies/other traps etc)
-                player.hit(trap.getType().getDamage());
-                i.remove();
-            }
-        }
-    }
 
-    private void updateItemsAndInventory() {
-        for (IItem item : itemList) {
-            if (player.getPosition().equals(item.getPosition())) {
-                player.addToInventory(item);
-                // TODO Is the remove threadsafe?
-                itemList.remove(item);
-                blitter.setMessage("Item picked up.");
-            }
-        }
-    }
-
-    public void setMap(IMap map) {
-        this.map = map;
-    }
-
-    public void setPlayer(IPlayer player) {
-        this.player = player;
-    }
-
-    public void setItems(LinkedList<IItem> items) {
-        this.items = items;
+    public IPlayer getPlayer() {
+        return ((Map) map).player;
     }
 }

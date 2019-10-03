@@ -32,6 +32,7 @@ class DrawingPanel extends JPanel {
         this.setScreen(screen);
     }
 
+    @Override
     public void paint(Graphics gfx) {
         super.paint(gfx);
         gfx.drawImage(screen, 0, 0, null);

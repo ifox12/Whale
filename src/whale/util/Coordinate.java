@@ -49,4 +49,12 @@ public class Coordinate {
         }
         return true;
     }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public int getRow() {
+        return row;
+    }
 }

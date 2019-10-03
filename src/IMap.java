@@ -1,11 +1,13 @@
 import whale.util.Coordinate;
 
 interface IMap {
-    boolean isCellEmpty(int x, int y);
-
-    void setMap(char[][] mapData);
+    boolean isCellEmpty(Coordinate coordinate);
 
     char[][] getDrawableMap();
 
-    boolean isCellEmpty(Coordinate position);
+    void updateItemsAndInventory();
+
+    void updateTraps();
+
+    String getMessage();
 }

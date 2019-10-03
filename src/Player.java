@@ -49,7 +49,7 @@ class Player implements IPlayer {
         health -= damage;
     }
 
-    public void is_dead() {
+    public void isDead() {
         if (health <= 0) {
             symbol = '+';
         }

@@ -6,4 +6,6 @@ public interface RNG {
     double doubleInRange(double lower, double upper);
 
     boolean returnTrueWithChanceOf(double chance);
+
+    //TODO something like: choose random value from array(generic array)
 }

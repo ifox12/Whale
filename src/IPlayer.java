@@ -5,5 +5,5 @@ interface IPlayer extends Placeable {
 
     void hit(int damage);
 
-    void is_dead();
+    void isDead();
 }
