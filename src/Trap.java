@@ -21,7 +21,7 @@ public class Trap implements ITrap {
     }
 
     public Coordinate trapTriggerLocationPossibility() {
-        return type.gapToTrigger.validPosition(position);
+        return type.triggerArea.validPosition(position);
     }
 
     public void connectTrapTrigger(Coordinate triggerPosition) {

@@ -10,4 +10,6 @@ interface IMap {
     void updateTraps();
 
     String getMessage();
+
+    boolean isAccessibleByPlayer(Coordinate coordinate);
 }

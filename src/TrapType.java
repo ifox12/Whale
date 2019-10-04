@@ -1,14 +1,14 @@
 enum TrapType {
-    Spike(10, new NoGap(), 0),
-    SpikedBoard(40, new DistanceGap(), 3),
-    Dart(10, new CardinalGap(), 4);
+    Spike(10, new SingleCellArea(), 0),
+    SpikedBoard(40, new DistanceArea(), 3),
+    Dart(10, new CardinalArea(), 4);
 
     private int damage;
-    Gap gapToTrigger;
+    Area triggerArea;
 
-    TrapType(int damage, Gap gappingType, int gappingDistance) {
-        gapToTrigger = gappingType;
-        gapToTrigger.setDistance(gappingDistance);
+    TrapType(int damage, Area placementArea, int placementDistance) {
+        triggerArea = placementArea;
+        triggerArea.setDistance(placementDistance);
         this.damage = damage;
     }
 

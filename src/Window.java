@@ -7,8 +7,7 @@ class Window extends JFrame {
 
     Window() {
         super("Whale");
-        panel = new DrawingPanel(null);
-        this.setScreen(screen);
+        panel = new DrawingPanel(screen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(400, 400);

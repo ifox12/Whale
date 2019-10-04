@@ -1,6 +1,6 @@
 package whale.util;
 
-public class Coordinate {
+public class Coordinate implements Comparable {
     private int row;
     private int column;
 
@@ -56,5 +56,22 @@ public class Coordinate {
 
     public int getRow() {
         return row;
+    }
+
+    @Override
+    public int compareTo(Object other) {
+        Integer thisRow = this.row;
+        Integer thisColumn = this.column;
+        Integer otherRow = ((Coordinate) other).row;
+        Integer otherColumn = ((Coordinate) other).column;
+
+        int rowComparison = thisRow.compareTo(otherRow);
+        int columnComparison = thisColumn.compareTo(otherColumn);
+
+        if (rowComparison != 0) {
+            return rowComparison;
+        } else {
+            return columnComparison;
+        }
     }
 }

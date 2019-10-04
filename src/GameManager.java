@@ -20,7 +20,7 @@ public class GameManager implements ActionListener {
 
     // TODO don't place player on traps or items or other things
     // TODO unify the code to find an empty map field to place things on
-    // TODO have the map story the location of things (or the things as a placable layer)
+    // TODO have the map story the location of things (or the things as a placeable layer)
     GameManager() throws IOException, FontFormatException {
         map = new Map(NUM_OF_ROWS, NUM_OF_COLUMNS);
 
@@ -45,7 +45,7 @@ public class GameManager implements ActionListener {
     void moveLeftFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(new Coordinate(targetRow, targetColumn - steps)))
+        if (map.isAccessibleByPlayer(new Coordinate(targetRow, targetColumn - steps)))
             getPlayer().moveTo(targetRow, targetColumn - steps);
     }
 
@@ -57,21 +57,21 @@ public class GameManager implements ActionListener {
     void moveRightFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(new Coordinate(targetRow, targetColumn + steps)))
+        if (map.isAccessibleByPlayer(new Coordinate(targetRow, targetColumn + steps)))
             getPlayer().moveTo(targetRow, targetColumn + steps);
     }
 
     void moveUpFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(new Coordinate(targetRow - steps, targetColumn)))
+        if (map.isAccessibleByPlayer(new Coordinate(targetRow - steps, targetColumn)))
             getPlayer().moveTo(targetRow - steps, targetColumn);
     }
 
     void moveDownFor(int steps) {
         extractPlayerPosition();
 
-        if (map.isCellEmpty(new Coordinate(targetRow + steps, targetColumn)))
+        if (map.isAccessibleByPlayer(new Coordinate(targetRow + steps, targetColumn)))
             getPlayer().moveTo(targetRow + steps, targetColumn);
     }
 
@@ -93,6 +93,6 @@ public class GameManager implements ActionListener {
 
 
     public IPlayer getPlayer() {
-        return ((Map) map).player;
+        return ((Map) map).getPlayer();
     }
 }

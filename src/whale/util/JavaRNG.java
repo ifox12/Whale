@@ -1,5 +1,6 @@
 package whale.util;
 
+import java.util.List;
 import java.util.Random;
 
 public class JavaRNG implements RNG {
@@ -46,5 +47,12 @@ public class JavaRNG implements RNG {
     @Override
     public boolean returnTrueWithChanceOf(double chance) {
         return (doubleInRange(0, 1) < chance);
+    }
+
+    @Override
+    public Coordinate chooseOne(List<Coordinate> coordinates) {
+        int index = intInRange(0, coordinates.size());
+        Coordinate coordinate = coordinates.get(index);
+        return coordinate;
     }
 }

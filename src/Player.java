@@ -42,7 +42,7 @@ class Player implements IPlayer {
     }
 
     public boolean inventoryContains(Placeable item) {
-        return inventory.contains((IItem) item);
+        return inventory.contains(item);
     }
 
     public void hit(int damage) {

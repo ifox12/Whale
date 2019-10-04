@@ -129,5 +129,10 @@ class GameManagerTest {
         public String getMessage() {
             return null;
         }
+
+        @Override
+        public boolean isAccessibleByPlayer(Coordinate coordinate) {
+            return false;
+        }
     }
 }

@@ -2,7 +2,6 @@ import whale.util.Coordinate;
 
 public class TrapTrigger implements Placeable {
 
-    private final char symbol = 'O';
     private Coordinate position;
     private int weight;
 
@@ -18,6 +17,6 @@ public class TrapTrigger implements Placeable {
 
     @Override
     public char getSymbol() {
-        return symbol;
+        return 'O';
     }
 }
