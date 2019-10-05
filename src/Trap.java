@@ -21,10 +21,6 @@ public class Trap implements ITrap {
         return '*';
     }
 
-    public Coordinate trapTriggerLocationPossibility() {
-        return type.triggerArea.validPosition(position);
-    }
-
     public void connectTrapTrigger(Coordinate triggerPosition) {
         trigger = new TrapTrigger(triggerPosition);
     }

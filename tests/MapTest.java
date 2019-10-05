@@ -288,11 +288,6 @@ class MapTest {
         }
 
         @Override
-        public Coordinate trapTriggerLocationPossibility() {
-            return null;
-        }
-
-        @Override
         public void connectTrapTrigger(Coordinate triggerPosition) {
 
         }

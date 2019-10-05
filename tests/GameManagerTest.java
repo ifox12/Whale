@@ -74,38 +74,6 @@ class GameManagerTest {
         }
     }
 
-    private class FakeTrap implements ITrap {
-        @Override
-        public Coordinate getPosition() {
-            return new Coordinate(3, 2);
-        }
-
-        @Override
-        public char getSymbol() {
-            return '*';
-        }
-
-        @Override
-        public Coordinate trapTriggerLocationPossibility() {
-            return null;
-        }
-
-        @Override
-        public void connectTrapTrigger(Coordinate triggerPosition) {
-
-        }
-
-        @Override
-        public Placeable getTrigger() {
-            return null;
-        }
-
-        @Override
-        public TrapType getType() {
-            return null;
-        }
-    }
-
     private class FakeMap implements IMap {
         @Override
         public boolean isCellEmpty(Coordinate coordinate) {
