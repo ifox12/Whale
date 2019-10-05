@@ -120,10 +120,10 @@ public class Map implements IMap {
 
     private boolean shouldBeWall(Coordinate coordinate) {
         boolean result = false;
-        if (coordinate.getRow() == 0 || coordinate.getRow() == ROWS - 1) {
+        if (coordinate.row() == 0 || coordinate.row() == ROWS - 1) {
             result = true;
         }
-        if (coordinate.getColumn() == 0 || coordinate.getColumn() == COLUMNS - 1) {
+        if (coordinate.column() == 0 || coordinate.column() == COLUMNS - 1) {
             result = true;
         }
         return result;
@@ -171,14 +171,14 @@ public class Map implements IMap {
     }
 
     private boolean isEmptyTerrain(Coordinate coordinate) {
-        return terrain.get(coordinate.getRow()).get(coordinate.getColumn()) == '.';
+        return terrain.get(coordinate.row()).get(coordinate.column()) == '.';
     }
 
     private boolean isInsideMapBounds(Coordinate coordinate) {
-        return coordinate.getRow() >= 0 &&
-               coordinate.getRow() < terrain.size() &&
-               coordinate.getColumn() >= 0 &&
-               coordinate.getColumn() < terrain.get(coordinate.getRow()).size();
+        return coordinate.row() >= 0 &&
+               coordinate.row() < terrain.size() &&
+               coordinate.column() >= 0 &&
+               coordinate.column() < terrain.get(coordinate.row()).size();
     }
 
     Coordinate findRandomEmptyCell(Area area) {

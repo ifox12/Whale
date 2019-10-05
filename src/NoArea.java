@@ -5,11 +5,6 @@ import java.util.List;
 
 public class NoArea implements Area {
     @Override
-    public Coordinate validPosition(Coordinate basePosition) {
-        return null;
-    }
-
-    @Override
     public void setDistance(int distance) {
 
     }

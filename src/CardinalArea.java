@@ -2,7 +2,6 @@ import whale.util.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class CardinalArea implements Area {
     private int distance;
@@ -10,23 +9,6 @@ public class CardinalArea implements Area {
 
     public void setBasePosition(Coordinate basePosition) {
         this.basePosition = basePosition;
-    }
-
-    @Override
-    public Coordinate validPosition(Coordinate pos) {
-        basePosition = pos;
-        Random rng = new Random();
-
-        Coordinate result = new Coordinate();
-        boolean horizontal = rng.nextBoolean();
-        if (horizontal) {
-            result.setRow(basePosition.row() + rng.nextInt(distance * 2) - distance);
-            result.setColumn(basePosition.column());
-        } else {
-            result.setColumn(basePosition.column() + rng.nextInt(distance * 2) - distance);
-            result.setRow(basePosition.row());
-        }
-        return result;
     }
 
     public void setDistance(int distance) {

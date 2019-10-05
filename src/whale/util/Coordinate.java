@@ -50,14 +50,6 @@ public class Coordinate implements Comparable {
         return true;
     }
 
-    public int getColumn() {
-        return column;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
     @Override
     public int compareTo(Object other) {
         Integer thisRow = this.row;

@@ -7,11 +7,6 @@ public class SingleCellArea implements Area {
     private Coordinate basePosition;
 
     @Override
-    public Coordinate validPosition(Coordinate basePosition) {
-        return basePosition;
-    }
-
-    @Override
     public void setDistance(int distance) {
     }
 
