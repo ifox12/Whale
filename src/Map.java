@@ -28,13 +28,9 @@ public class Map implements IMap {
         setItemList(new LinkedList<>());
         getItemList().add(new Item(new Coordinate(2, 1)));
 
-        RNG rng = new JavaRNG();
         setTraps(new LinkedList<>());
         for (int i = 0; i < 3; i++) {
-            Coordinate randomEmptyCell = findRandomEmptyCell(new NoArea());
-            Coordinate targetCoordinate = randomEmptyCell;
-            TrapType targetType = TrapType.values()[rng.intInRange(0, TrapType.values().length)];
-            getTraps().add(makeTrap(targetCoordinate, targetType));
+            getTraps().add(Trap.makeTrap(this));
         }
     }
 
@@ -66,14 +62,6 @@ public class Map implements IMap {
     @Override
     public String getMessage() {
         return message;
-    }
-
-    // TODO put that factory inside Trap and let it do it's own RNG
-    private ITrap makeTrap(Coordinate position, TrapType type) {
-        ITrap trap = new Trap(position, type);
-        Coordinate possibleTriggerLocation = findRandomEmptyCell(type.triggerArea);
-        trap.connectTrapTrigger(possibleTriggerLocation);
-        return trap;
     }
 
     void setTerrain(List<List<Character>> terrain) {

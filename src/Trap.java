@@ -5,10 +5,22 @@ public class Trap implements ITrap {
     private TrapType type;
     private TrapTrigger trigger;
 
-    Trap(Coordinate position, TrapType type) {
+    private Trap(Coordinate position, TrapType type) {
         this.position = position;
         this.type = type;
         this.type.triggerArea.setBasePosition(this.position);
+    }
+
+    static ITrap makeTrap(Map map) {
+        Coordinate targetCoordinate = map.findRandomEmptyCell(new NoArea());
+        TrapType targetType = TrapType.returnRandom();
+
+        ITrap trap = new Trap(targetCoordinate, targetType);
+
+        Coordinate possibleTriggerLocation = map.findRandomEmptyCell(targetType.triggerArea);
+        trap.connectTrapTrigger(possibleTriggerLocation);
+
+        return trap;
     }
 
     @Override
