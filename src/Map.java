@@ -129,6 +129,7 @@ public class Map implements IMap {
         return result;
     }
 
+    // TODO Put the placeables in one List to traverse over when checking for empty fields
     @Override
     public boolean isCellEmpty(Coordinate coordinate) {
         boolean result = false;
@@ -183,25 +184,34 @@ public class Map implements IMap {
 
     Coordinate findRandomEmptyCell(Area area) {
         try {
-            List<Coordinate> coordinates = area.getCells();
-            if (coordinates.isEmpty()) {
-                populateWithWholeTerrain(coordinates);
-            }
-            RNG rng = new JavaRNG();
-            Coordinate possibleLocation = null;
-            do {
-                removeLocationFromList(coordinates, possibleLocation);
-                if (coordinates.isEmpty()) {
-                    throw new Exception("target area seems to be full");
-                }
-                possibleLocation = rng.chooseOne(coordinates);
-            } while (!isCellEmpty(possibleLocation));
+            List<Coordinate> coordinates = determinePossiblePositions(area);
+            return selectEmptyPossiblePosition(coordinates);
 
-            return possibleLocation;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Coordinate selectEmptyPossiblePosition(List<Coordinate> coordinates) throws Exception {
+        RNG rng = new JavaRNG();
+        Coordinate possibleLocation = null;
+        do {
+            removeLocationFromList(coordinates, possibleLocation);
+            if (coordinates.isEmpty()) {
+                throw new Exception("target area seems to be full");
+            }
+            possibleLocation = rng.chooseOne(coordinates);
+        } while (!isCellEmpty(possibleLocation));
+        return possibleLocation;
+    }
+
+    private List<Coordinate> determinePossiblePositions(Area area) {
+        List<Coordinate> coordinates = area.getCells();
+        if (coordinates.isEmpty()) {
+            populateWithWholeTerrain(coordinates);
+        }
+        return coordinates;
     }
 
     private void populateWithWholeTerrain(List<Coordinate> coordinates) {
