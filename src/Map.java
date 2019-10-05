@@ -36,7 +36,7 @@ public class Map implements IMap {
 
     public void updateItemsAndInventory() {
         for (IItem item : getItemList()) {
-            if (getPlayer().getPosition().equals(item.getPosition())) {
+            if (getPlayer().comparePosition(item)) {
                 getPlayer().addToInventory(item);
                 // TODO Is the remove threadsafe?
                 getItemList().remove(item);
@@ -50,7 +50,7 @@ public class Map implements IMap {
         ITrap trap;
         while (i.hasNext()) {
             trap = i.next();
-            if (getPlayer().getPosition().equals(trap.getTrigger().getPosition())) {
+            if (getPlayer().comparePosition(trap.getTrigger())) {
                 message = "Trap sprung: " + trap.getType();
                 // TODO apply damage to entity on specific field, not just player (to have traps hit enemies/other traps etc)
                 getPlayer().hit(trap.getType().getDamage());
@@ -145,7 +145,7 @@ public class Map implements IMap {
 
     private boolean isNotTrapPosition(Coordinate coordinate) {
         for (ITrap trap : getTraps()) {
-            if (trap.getPosition().equals(coordinate) || trap.getTrigger().getPosition().equals(coordinate)) {
+            if (trap.comparePosition(coordinate) || trap.getTrigger().comparePosition(coordinate)) {
                 return false;
             }
         }
@@ -154,7 +154,7 @@ public class Map implements IMap {
 
     private boolean isNotItemPosition(Coordinate coordinate) {
         for (IItem item : getItemList()) {
-            if (item.getPosition().equals(coordinate)) {
+            if (item.comparePosition(coordinate)) {
                 return false;
             }
         }
@@ -163,7 +163,7 @@ public class Map implements IMap {
 
     // TODO there's duplication of that somewhere in here
     private boolean isNotPlayerPosition(Coordinate coordinate) {
-        return !getPlayer().getPosition().equals(coordinate);
+        return !getPlayer().comparePosition(coordinate);
     }
 
     public boolean isAccessibleByPlayer(Coordinate coordinate) {
