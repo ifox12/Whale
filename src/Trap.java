@@ -8,6 +8,7 @@ public class Trap implements ITrap {
     Trap(Coordinate position, TrapType type) {
         this.position = position;
         this.type = type;
+        this.type.triggerArea.setBasePosition(this.position);
     }
 
     @Override

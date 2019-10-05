@@ -71,8 +71,6 @@ public class Map implements IMap {
     // TODO put that factory inside Trap and let it do it's own RNG
     private ITrap makeTrap(Coordinate position, TrapType type) {
         ITrap trap = new Trap(position, type);
-        // TODO don't go down the rabbit hole to set the basePosition of the TriggerArea
-        trap.getType().triggerArea.setBasePosition(trap.getPosition());
         Coordinate possibleTriggerLocation = findRandomEmptyCell(type.triggerArea);
         trap.connectTrapTrigger(possibleTriggerLocation);
         return trap;
