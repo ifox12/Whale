@@ -17,6 +17,7 @@ public class Trap implements ITrap {
 
         ITrap trap = new Trap(targetCoordinate, targetType);
 
+        // TODO Is placing the trigger on the same cell as the trap disabled?
         Coordinate possibleTriggerLocation = map.findRandomEmptyCell(targetType.triggerArea);
         trap.connectTrapTrigger(possibleTriggerLocation);
 

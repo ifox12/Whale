@@ -18,9 +18,6 @@ public class GameManager implements ActionListener {
     private int targetRow;
     private int targetColumn;
 
-    // TODO don't place player on traps or items or other things
-    // TODO unify the code to find an empty map field to place things on
-    // TODO have the map story the location of things (or the things as a placeable layer)
     GameManager() throws IOException, FontFormatException {
         map = new Map(NUM_OF_ROWS, NUM_OF_COLUMNS);
 

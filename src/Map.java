@@ -18,6 +18,8 @@ public class Map implements IMap {
     private List<List<Character>> terrain;
     private String message = "";
 
+    // TODO unify the code to find an empty map field to place things on
+    // TODO have the map store the location of things (or the things as a placeable layer)
     Map(int rows, int columns) {
         ROWS = rows;
         COLUMNS = columns;
