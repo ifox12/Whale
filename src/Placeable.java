@@ -6,7 +6,7 @@ public interface Placeable {
     char getSymbol();
 
     default boolean comparePosition(Placeable other) {
-        return this.getPosition().equals(other.getPosition());
+        return comparePosition(other.getPosition());
     }
 
     default boolean comparePosition(Coordinate otherPosition) {
