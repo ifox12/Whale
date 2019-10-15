@@ -279,7 +279,6 @@ class MapTest {
 
     private class FakeTrap implements ITrap {
         private final Coordinate position;
-        private TrapType type;
         private TrapTrigger trigger;
 
         FakeTrap(Coordinate coordinate) {
@@ -298,8 +297,13 @@ class MapTest {
         }
 
         @Override
-        public TrapType getType() {
+        public Area getTriggerArea() {
             return null;
+        }
+
+        @Override
+        public int getDamage() {
+            return 0;
         }
 
         @Override

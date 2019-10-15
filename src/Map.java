@@ -32,7 +32,7 @@ public class Map implements IMap {
 
         setTraps(new LinkedList<>());
         for (int i = 0; i < 3; i++) {
-            getTraps().add(Trap.makeTrap(this));
+            getTraps().add(TrapFactory.makeTrap(this, TrapType.returnRandom()));
         }
     }
 
@@ -53,9 +53,9 @@ public class Map implements IMap {
         while (i.hasNext()) {
             trap = i.next();
             if (getPlayer().comparePosition(trap.getTrigger())) {
-                message = "Trap sprung: " + trap.getType();
+                message = "Trap sprung: " + trap.getClass();
                 // TODO apply damage to entity on specific field, not just player (to have traps hit enemies/other traps etc)
-                getPlayer().hit(trap.getType().getDamage());
+                getPlayer().hit(trap.getDamage());
                 i.remove();
             }
         }

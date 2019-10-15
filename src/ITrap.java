@@ -5,5 +5,7 @@ interface ITrap extends Placeable {
 
     Placeable getTrigger();
 
-    TrapType getType();
+    Area getTriggerArea();
+
+    int getDamage();
 }
