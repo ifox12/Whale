@@ -1,6 +1,6 @@
 package whale.util;
 
-public class Coordinate implements Comparable {
+public class Coordinate implements Comparable, Cloneable {
     private int row;
     private int column;
 
@@ -65,5 +65,14 @@ public class Coordinate implements Comparable {
         } else {
             return columnComparison;
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public Coordinate add(Coordinate other) {
+        return new Coordinate(this.row + other.row, this.column + other.column);
     }
 }

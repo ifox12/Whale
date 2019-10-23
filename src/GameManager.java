@@ -8,8 +8,8 @@ import java.io.IOException;
 
 // TODO make this testable!!!
 public class GameManager implements ActionListener {
-    private final int NUM_OF_ROWS = 12;
-    private final int NUM_OF_COLUMNS = 12;
+    private final int NUM_OF_ROWS = 40;
+    private final int NUM_OF_COLUMNS = 80;
     private IMap map;
     private Window window;
     private Blitter blitter;

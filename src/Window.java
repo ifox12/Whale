@@ -10,7 +10,7 @@ class Window extends JFrame {
         panel = new DrawingPanel(screen);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setSize(400, 400);
+        setSize(1000, 1000);
         setLocationRelativeTo(null);
         add(panel);
 

@@ -1,3 +1,4 @@
+import whale.map.MapCell;
 import whale.util.Coordinate;
 import whale.util.JavaRNG;
 import whale.util.RNG;
@@ -15,25 +16,57 @@ public class Map implements IMap {
     private IPlayer player;
     private List<IItem> itemList;
     private List<ITrap> traps;
-    private List<List<Character>> terrain;
     private String message = "";
+    private List<List<MapCell>> terrain;
 
     // TODO unify the code to find an empty map field to place things on
     // TODO have the map store the location of things (or the things as a placeable layer)
     Map(int rows, int columns) {
         ROWS = rows;
         COLUMNS = columns;
-        terrain = generatedTerrain();
-        // TODO Data structure for grids
+        setTerrain(procgenTerrain());
 
-        setPlayer(new Player(new Coordinate(3, 3)));
+        setPlayer(new Player(randomPlayerPosition()));
         setItemList(new LinkedList<>());
-        getItemList().add(new Item(new Coordinate(2, 1)));
+
 
         setTraps(new LinkedList<>());
         for (int i = 0; i < 3; i++) {
             getTraps().add(TrapFactory.makeTrap(this, TrapType.returnRandom()));
         }
+
+        // TODO make placement of different Placeables independent of placing order (see isCellEmpty() and related)
+        getItemList().add(new Item(randomItemPosition()));
+    }
+
+    private Coordinate randomPlayerPosition() {
+        List<Coordinate> list = new ArrayList<>();
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < ROWS; j++) {
+                Coordinate currentCell = new Coordinate(i, j);
+                if (isAccessibleByPlayer(currentCell)) {
+                    list.add(currentCell);
+                }
+            }
+        }
+        RNG rng = new JavaRNG();
+        return list.get(rng.intInRange(0, list.size()));
+    }
+
+    private Coordinate randomItemPosition() {
+        List<Coordinate> list = new ArrayList<>();
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < ROWS; j++) {
+                Coordinate currentCell = new Coordinate(i, j);
+                if (isCellEmpty(currentCell)) {
+                    list.add(currentCell);
+                }
+            }
+        }
+        RNG rng = new JavaRNG();
+        return list.get(rng.intInRange(0, list.size()));
     }
 
     public void updateItemsAndInventory() {
@@ -66,8 +99,30 @@ public class Map implements IMap {
         return message;
     }
 
-    void setTerrain(List<List<Character>> terrain) {
-        this.terrain = terrain;
+    List<List<MapCell>> generatedTerrain() {
+        List<List<MapCell>> result = new ArrayList<>();
+        for (int row = 0; row < ROWS; row++) {
+            result.add(new ArrayList<>());
+            for (int column = 0; column < COLUMNS; column++) {
+                if (isOuterWall(new Coordinate(row, column))) {
+                    result.get(row).add(new MapCell('#'));
+                } else {
+                    result.get(row).add(new MapCell('.'));
+                }
+            }
+        }
+        return result;
+    }
+
+    // TODO make the conversion of 2D List to 2D array a little nicer
+    char[][] getDrawableTerrain() {
+        char[][] result = new char[ROWS][COLUMNS];
+        for (int row = 0; row < ROWS; row++) {
+            for (int column = 0; column < COLUMNS; column++) {
+                result[row][column] = getTerrain().get(row).get(column).symbol;
+            }
+        }
+        return result;
     }
 
     public char[][] getDrawableMap() {
@@ -86,15 +141,12 @@ public class Map implements IMap {
         return result;
     }
 
-    // TODO make the conversion of 2D List to 2D array a little nicer
-    char[][] getDrawableTerrain() {
-        char[][] result = new char[ROWS][COLUMNS];
-        for (int row = 0; row < ROWS; row++) {
-            for (int column = 0; column < COLUMNS; column++) {
-                result[row][column] = terrain.get(row).get(column);
-            }
-        }
-        return result;
+    private List<List<MapCell>> getTerrain() {
+        return terrain;
+    }
+
+    void setTerrain(List<List<MapCell>> terrain) {
+        this.terrain = terrain;
     }
 
     private char[][] addToDrawableMap(final char[][] map, final Placeable placeable) {
@@ -105,22 +157,106 @@ public class Map implements IMap {
         return result;
     }
 
-    List<List<Character>> generatedTerrain() {
-        List<List<Character>> result = new ArrayList<>();
-        for (int row = 0; row < ROWS; row++) {
-            result.add(new ArrayList<>());
-            for (int column = 0; column < COLUMNS; column++) {
-                if (shouldBeWall(new Coordinate(row, column))) {
-                    result.get(row).add('#');
+    // TODO algorithm for placing rooms
+    //  set minimum size for room and minimum spacing between
+    //  place rooms on map randomly, till there's not enough space left for a new one
+    //  optimal placing performance wise
+    List<List<MapCell>> procgenTerrain() {
+        List<List<MapCell>> result = new ArrayList<>();
+        char fillCharacter = '#';
+        fillMap(result, fillCharacter);
+
+        RNG rng = new JavaRNG();
+        int numOfRooms = rng.intInRange(5, 12);
+        Room[] rooms = new Room[numOfRooms];
+        for (int i = 0; i < numOfRooms; i++) {
+            Room room = new Room(COLUMNS, ROWS);
+            rooms[i] = room;
+            placeRoomOnMap(result, room);
+        }
+
+
+        for (Room room : rooms) {
+            room.findBorderTiles();
+        }
+
+        for (Room room : rooms) {
+            boolean isConnected = false;
+            for (Coordinate tile : room.borderTiles) {
+                if (getCharAt(tile, result) == '.') {
+                    isConnected = true;
+                    break;
+                }
+            }
+
+            Coordinate currentCorridorCell = room.getRandomBorderTile();
+            Coordinate direction = findDirection(room, currentCorridorCell);
+            List<Coordinate> trail = new ArrayList<>();
+            while (!isConnected) {
+                while (isOuterWall(currentCorridorCell)) {
+                    currentCorridorCell = room.getRandomBorderTile();
+                    direction = findDirection(room, currentCorridorCell);
+                    trail.clear();
+                }
+                if (getCharAt(currentCorridorCell, result) == '.') {
+                    for (Coordinate tile : trail) {
+                        setCharAt(tile, result, '.');
+                    }
+                    isConnected = true;
                 } else {
-                    result.get(row).add('.');
+                    trail.add(currentCorridorCell);
+                    currentCorridorCell = currentCorridorCell.add(direction);
                 }
             }
         }
         return result;
     }
 
-    private boolean shouldBeWall(Coordinate coordinate) {
+    private Coordinate findDirection(Room room, Coordinate currentCorridorCell) {
+        Coordinate result = new Coordinate(0, 0);
+        if (currentCorridorCell.row() < room.topEdgeRow) {
+            result = new Coordinate(-1, 0);
+        } else if (currentCorridorCell.column() < room.leftEdgeColumn) {
+            result = new Coordinate(0, -1);
+        } else if (currentCorridorCell.row() > room.bottomEdgeRow) {
+            result = new Coordinate(+1, 0);
+        } else if (currentCorridorCell.column() > room.rightEdgeColumn) {
+            result = new Coordinate(0, +1);
+        }
+        return result;
+    }
+
+    private Character getCharAt(Coordinate cell, List<List<MapCell>> map) {
+        return map.get(cell.row()).get(cell.column()).symbol;
+    }
+
+    private void setCharAt(Coordinate cell, List<List<MapCell>> map, char character) {
+        map.get(cell.row()).set(cell.column(), new MapCell(character));
+    }
+
+    private void placeRoomOnMap(List<List<MapCell>> result, Room room) {
+        for (int row = room.topEdgeRow; row <= room.bottomEdgeRow; row++) {
+            for (int column = room.leftEdgeColumn; column <= room.rightEdgeColumn; column++) {
+                Coordinate cell = new Coordinate(row, column);
+                if (isOuterWall(cell)) {
+                    setCharAt(cell, result, '#');
+                } else {
+                    setCharAt(cell, result, '.');
+                }
+            }
+        }
+    }
+
+    private void fillMap(List<List<MapCell>> result, char fillCharacter) {
+        for (int row = 0; row < ROWS; row++) {
+            result.add(new ArrayList<>());
+            for (int column = 0; column < COLUMNS; column++) {
+                result.get(row).add(new MapCell(fillCharacter));
+            }
+        }
+    }
+
+    private boolean isOuterWall(Coordinate coordinate) {
         boolean result = false;
         if (coordinate.row() == 0 || coordinate.row() == ROWS - 1) {
             result = true;
@@ -174,14 +310,14 @@ public class Map implements IMap {
     }
 
     private boolean isEmptyTerrain(Coordinate coordinate) {
-        return terrain.get(coordinate.row()).get(coordinate.column()) == '.';
+        return getCharAt(coordinate, getTerrain()) == '.';
     }
 
     private boolean isInsideMapBounds(Coordinate coordinate) {
         return coordinate.row() >= 0 &&
-               coordinate.row() < terrain.size() &&
+               coordinate.row() < getTerrain().size() &&
                coordinate.column() >= 0 &&
-               coordinate.column() < terrain.get(coordinate.row()).size();
+               coordinate.column() < getTerrain().get(coordinate.row()).size();
     }
 
     Coordinate findRandomEmptyCell(Area area) {
@@ -257,4 +393,7 @@ public class Map implements IMap {
     void setTraps(List<ITrap> traps) {
         this.traps = traps;
     }
+
+
 }
+

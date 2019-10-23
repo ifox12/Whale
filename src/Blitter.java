@@ -8,6 +8,7 @@ class Blitter {
     private FontData fontData;
     private final int NUM_OF_ROWS;
     private final int NUM_OF_COLUMNS;
+    Color bgColor = Color.BLACK;
 
     Blitter(int rows, int columns) throws IOException, FontFormatException {
         setFontData(new FontData("DejaVuSansMono.ttf"));
@@ -59,7 +60,7 @@ class Blitter {
 
     // TODO Test pixel values
     void drawGlyphBackground() {
-        getGfx().setColor(Color.BLACK);
+        getGfx().setColor(bgColor);
         getGfx().clearRect(0, 0, getFontData().fontWidth, getFontData().fontHeight);
     }
 
