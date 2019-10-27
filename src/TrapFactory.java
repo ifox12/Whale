@@ -3,7 +3,7 @@ import whale.util.Coordinate;
 public class TrapFactory {
 
     static ITrap makeTrap(Map map, TrapType targetType) {
-        Coordinate targetCoordinate = map.findRandomEmptyCell(new NoArea());
+        Coordinate targetCoordinate = map.findRandomEmptyCell(new NoArea(map.ROWS, map.COLUMNS));
         ITrap trap = null;
         if (targetType == TrapType.Dart) {
             trap = new DartTrap(targetCoordinate);

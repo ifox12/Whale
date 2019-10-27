@@ -10,15 +10,14 @@ import java.util.List;
 
 public class Map implements IMap {
 
-    private final int ROWS;
-    private final int COLUMNS;
-
+    final int ROWS;
+    final int COLUMNS;
+    private final RNG rng = new JavaRNG();
     private IPlayer player;
     private List<IItem> itemList;
     private List<ITrap> traps;
     private String message = "";
     private List<List<MapCell>> terrain;
-    private final RNG rng = new JavaRNG();
 
     // TODO unify the code to find an empty map field to place things on
     // TODO have the map store the location of things (or the things as a placeable layer)
@@ -37,35 +36,21 @@ public class Map implements IMap {
         }
 
         // TODO make placement of different Placeables independent of placing order (see isCellEmpty() and related)
-        getItemList().add(new Item(randomItemPosition()));
+        getItemList().add(new Item(findRandomEmptyCell(new NoArea(ROWS, COLUMNS))));
     }
 
     private Coordinate randomPlayerPosition() {
         List<Coordinate> list = new ArrayList<>();
 
         for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < ROWS; j++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 Coordinate currentCell = new Coordinate(i, j);
                 if (isAccessibleByPlayer(currentCell)) {
                     list.add(currentCell);
                 }
             }
         }
-        return list.get(rng.intInRange(0, list.size()));
-    }
-
-    private Coordinate randomItemPosition() {
-        List<Coordinate> list = new ArrayList<>();
-
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < ROWS; j++) {
-                Coordinate currentCell = new Coordinate(i, j);
-                if (isCellEmpty(currentCell)) {
-                    list.add(currentCell);
-                }
-            }
-        }
-        return list.get(rng.intInRange(0, list.size()));
+        return rng.chooseOne(list);
     }
 
     public void updateItemsAndInventory() {
@@ -320,51 +305,21 @@ public class Map implements IMap {
 
     Coordinate findRandomEmptyCell(Area area) {
         try {
-            List<Coordinate> coordinates = determinePossiblePositions(area);
-            return selectEmptyPossiblePosition(coordinates);
+            List<Coordinate> coordinates = area.getCells();
+            Coordinate possibleLocation = rng.chooseOne(coordinates);
+            while (!isCellEmpty(possibleLocation)) {
+                coordinates.remove(possibleLocation);
+                if (coordinates.isEmpty()) {
+                    throw new Exception("target area seems to be full");
+                }
+                possibleLocation = rng.chooseOne(coordinates);
+            }
+            return possibleLocation;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private Coordinate selectEmptyPossiblePosition(List<Coordinate> coordinates) throws Exception {
-        Coordinate possibleLocation = null;
-        do {
-            removeLocationFromList(coordinates, possibleLocation);
-            if (coordinates.isEmpty()) {
-                throw new Exception("target area seems to be full");
-            }
-            possibleLocation = rng.chooseOne(coordinates);
-        } while (!isCellEmpty(possibleLocation));
-        return possibleLocation;
-    }
-
-    private List<Coordinate> determinePossiblePositions(Area area) {
-        List<Coordinate> coordinates = area.getCells();
-        if (coordinates.isEmpty()) {
-            populateWithWholeTerrain(coordinates);
-        }
-        return coordinates;
-    }
-
-    private void populateWithWholeTerrain(List<Coordinate> coordinates) {
-        for (int row = 0; row < ROWS; row++) {
-            for (int column = 0; column < COLUMNS; column++) {
-                coordinates.add(new Coordinate(row, column));
-            }
-        }
-    }
-
-    private void removeLocationFromList(List<Coordinate> coordinates, Coordinate possibleLocation) {
-        try {
-            if (possibleLocation != null && !coordinates.remove(possibleLocation)) {
-                throw new Exception("item slated for deletion is not in coordinates list");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     IPlayer getPlayer() {
