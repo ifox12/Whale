@@ -18,6 +18,7 @@ public class Map implements IMap {
     private List<ITrap> traps;
     private String message = "";
     private List<List<MapCell>> terrain;
+    private final RNG rng = new JavaRNG();
 
     // TODO unify the code to find an empty map field to place things on
     // TODO have the map store the location of things (or the things as a placeable layer)
@@ -50,7 +51,6 @@ public class Map implements IMap {
                 }
             }
         }
-        RNG rng = new JavaRNG();
         return list.get(rng.intInRange(0, list.size()));
     }
 
@@ -65,7 +65,6 @@ public class Map implements IMap {
                 }
             }
         }
-        RNG rng = new JavaRNG();
         return list.get(rng.intInRange(0, list.size()));
     }
 
@@ -166,7 +165,6 @@ public class Map implements IMap {
         char fillCharacter = '#';
         fillMap(result, fillCharacter);
 
-        RNG rng = new JavaRNG();
         int numOfRooms = rng.intInRange(5, 12);
         Room[] rooms = new Room[numOfRooms];
         for (int i = 0; i < numOfRooms; i++) {
@@ -332,7 +330,6 @@ public class Map implements IMap {
     }
 
     private Coordinate selectEmptyPossiblePosition(List<Coordinate> coordinates) throws Exception {
-        RNG rng = new JavaRNG();
         Coordinate possibleLocation = null;
         do {
             removeLocationFromList(coordinates, possibleLocation);
