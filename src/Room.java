@@ -29,11 +29,6 @@ public class Room {
         calculateConvenienceVars();
     }
 
-    Room() {
-        this.width = rng.intInRange(5, 15);
-        this.height = rng.intInRange(5, 15);
-    }
-
     Coordinate getRandomBorderTile() {
         return borderTiles[rng.intInRange(0, borderTiles.length)];
     }
