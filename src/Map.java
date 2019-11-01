@@ -18,6 +18,7 @@ public class Map implements IMap {
     private List<ITrap> traps;
     private String message = "";
     private List<List<MapCell>> terrain;
+    private List<Placeable> mapObjects;
 
     // TODO unify the code to find an empty map field to place things on
     // TODO have the map store the location of things (or the things as a placeable layer)
@@ -27,6 +28,8 @@ public class Map implements IMap {
         setTerrain(procgenTerrain());
 
         setPlayer(new Player(randomPlayerPosition()));
+        mapObjects = new ArrayList<>();
+
         setItemList(new LinkedList<>());
 
 
